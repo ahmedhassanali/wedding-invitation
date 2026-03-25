@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GameScore extends Model
+class Congratulations extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['player_name', 'time_seconds', 'moves', 'ip_address'];
+    protected $fillable = ['name', 'message', 'ip_address'];
 }
