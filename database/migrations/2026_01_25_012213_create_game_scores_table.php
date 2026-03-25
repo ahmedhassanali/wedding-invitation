@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('moves');                  // عدد الحركات
             $table->string('ip_address')->nullable();
             $table->timestamp('created_at')->useCurrent();
-
             $table->index(['time_seconds', 'moves']);  // لترتيب أسرع اللاعبين
             $table->index('created_at');
         });
