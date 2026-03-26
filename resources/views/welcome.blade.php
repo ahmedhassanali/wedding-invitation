@@ -217,10 +217,10 @@
         </div>
     </div>
 
-    <button onclick="window.location.href='{{ route('leaderboard') }}'"
+    {{-- <button onclick="window.location.href='{{ route('leaderboard') }}'"
         class="w-full mt-3 bg-slate-800 hover:bg-slate-700 border border-yellow-500/30 py-3 rounded-xl text-yellow-300 transition-all">
         🏆 عرض لوحة المتصدرين
-    </button>
+    </button> --}}
 
     <div x-show="opened" class="relative z-10" x-cloak>
         <header class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20">
@@ -759,7 +759,7 @@
                         })
                         .catch(() => {});
 
-                
+
                 }
 
                 createPetals() {
