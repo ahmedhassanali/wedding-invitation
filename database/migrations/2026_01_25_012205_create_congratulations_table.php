@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('name');                    // اسم المهنئ
             $table->text('message');                   // نص التهنئة
             $table->string('ip_address')->nullable();  // للأمان (اختياري)
-            $table->timestamp('created_at')->useCurrent();
-
+            $table->timestamps();             // This automatically adds both created_at and updated_at
             $table->index(['created_at']);
         });
     }
