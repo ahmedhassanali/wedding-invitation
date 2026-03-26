@@ -429,17 +429,19 @@
                 timerInterval: null,
                 loading: false,
                 showSuccess: false,
-                showWinPopupClosed: false,
-
                 formData: {
                     name: '',
                     message: ''
                 },
-
-                pairs: [{
+                pairs: [
+                    // الزوج الأساسي – سيبقى دائمًا
+                    {
                         a: 'أَحْمَدُ',
                         b: 'أُمْنِيَّةُ'
                     },
+
+                    // باقي الأزواج المرشحة للاختيار العشوائي
+
                     {
                         a: '💃',
                         b: '🕺'
@@ -471,63 +473,65 @@
                     {
                         a: '🌙',
                         b: '⭐'
-                    },
+                    }, // القمر ونجومه
                     {
                         a: '💍',
                         b: '💎'
-                    },
+                    }, // الدبلة والماس
                     {
                         a: '🌹',
                         b: '💖'
-                    },
+                    }, // الورد والحب
                     {
                         a: '🕊️',
                         b: '🌿'
-                    },
+                    }, // حمامة السلام والغصن
                     {
                         a: '☕',
                         b: '🍪'
-                    },
+                    }, // القهوة والتحلية
                     {
                         a: '🏠',
                         b: '🔑'
-                    },
+                    }, // البيت والمفتاح
                     {
                         a: '🎻',
                         b: '🎵'
-                    },
+                    }, // الموسيقى واللحن
                     {
                         a: '🌊',
                         b: '🐚'
-                    },
+                    }, // البحر والقوقعة
                     {
                         a: '👰',
                         b: '🤵'
-                    }
+                    } // العروس والعريس
                 ],
 
-                init() {
-                    AOS.init({
-                        duration: 1000,
-                        once: true
-                    });
-                    this.resetGame();
-                    this.startCountdown();
-                    this.createPetals();
-                },
+                // ────────────────────────────────────────────────
+                // استبدل دالة resetGame بالنسخة التالية
+                // ────────────────────────────────────────────────
 
                 resetGame() {
                     this.moves = 0;
                     this.gameTimer = 0;
-                    this.flippedCards = [];
 
+                    // ────────────────────────────────────────────────
+                    // عدد الأزواج اللي عايزينه دائمًا = 6 (→ 12 كارت)
+                    // ────────────────────────────────────────────────
                     const TOTAL_PAIRS = 6;
+
+                    // 1. نبدأ بالزوج الثابت (أحمد وأمنية)
                     let selectedPairs = [this.pairs[0]];
 
+                    // 2. نختار 5 أزواج عشوائية من الباقي
                     const otherPairs = this.pairs.slice(1);
                     const shuffled = [...otherPairs].sort(() => Math.random() - 0.5);
+
+                    // نأخذ أول 5 من المخلوطين
                     selectedPairs = selectedPairs.concat(shuffled.slice(0, TOTAL_PAIRS - 1));
 
+                    // 3. تحويل الأزواج لكروت (كل زوج → كارتين)
                     let flat = [];
                     selectedPairs.forEach(p => {
                         flat.push({
@@ -540,6 +544,7 @@
                         });
                     });
 
+                    // 4. خلط الكروت عشوائيًا
                     this.cards = flat.sort(() => Math.random() - 0.5).map((item, id) => ({
                         id,
                         value: item.v,
@@ -548,27 +553,41 @@
                         cleared: false
                     }));
 
+                    // إعادة تشغيل التايمر لو اللعبة مفتوحة
                     if (this.opened) this.startGameTimer();
+
+                    // لو عندك متغير لإغلاق نافذة الفوز، رجّعه false
+                    this.showWinPopupClosed = false;
+                },
+                init() {
+                    AOS.init({
+                        duration: 1000,
+                        once: true
+                    });
+                    this.resetGame();
+                    this.startCountdown();
+                    this.createPetals();
                 },
 
+                // ... كل المتغيرات السابقة
+                showWinPopupClosed: false, // ← أضف هذا السطر
+
+
+
                 startCountdown() {
-                    const weddingDate = new Date('2026-04-03T15:00:00').getTime();
+                    const weddingDate = new Date('April 3, 2026 15:00:00').getTime();
                     setInterval(() => {
                         const now = new Date().getTime();
                         const dist = weddingDate - now;
-
                         this.countdown.days = Math.floor(dist / (1000 * 60 * 60 * 24));
                         this.countdown.hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         this.countdown.minutes = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
                         this.countdown.seconds = Math.floor((dist % (1000 * 60)) / 1000);
                     }, 1000);
                 },
-
                 openInvitation() {
                     this.opened = true;
-                    const openSfx = document.getElementById('openSfx');
-                    if (openSfx) openSfx.play().catch(() => {});
-
+                    document.getElementById('openSfx').play().catch(e => {});
                     confetti({
                         particleCount: 150,
                         spread: 70,
@@ -585,20 +604,16 @@
                         this.startGameTimer();
                     }, 3000);
                 },
-
                 toggleMusic(forcePlay = false) {
                     const audio = document.getElementById('bgMusic');
-                    if (!audio) return;
-
                     if (forcePlay || audio.paused) {
-                        audio.play().catch(() => {});
+                        audio.play().catch(e => {});
                         this.musicPlaying = true;
                     } else {
                         audio.pause();
                         this.musicPlaying = false;
                     }
                 },
-
                 startGameTimer() {
                     if (this.timerInterval) clearInterval(this.timerInterval);
                     this.timerInterval = setInterval(() => {
@@ -611,41 +626,40 @@
                 },
 
                 flipCard(index) {
-                    const card = this.cards[index];
-                    if (card.flipped || card.cleared || this.flippedCards.length === 2) return;
+                    if (this.cards[index].flipped || this.cards[index].cleared || this.flippedCards.length === 2) return;
 
-                    card.flipped = true;
+                    this.cards[index].flipped = true;
                     this.flippedCards.push(index);
-                    document.getElementById('flipSfx')?.play().catch(() => {});
+                    document.getElementById('flipSfx').play().catch(e => {});
 
                     if (this.flippedCards.length === 2) {
                         this.moves++;
                         setTimeout(() => this.checkMatch(), 700);
                     }
                 },
-
                 checkMatch() {
-                    const [i1, i2] = this.flippedCards;
+                    let [i1, i2] = this.flippedCards;
                     if (this.cards[i1].match === this.cards[i2].value) {
                         this.cards[i1].cleared = this.cards[i2].cleared = true;
 
                         if (this.cards.every(c => c.cleared)) {
-                            document.getElementById('winSfx')?.play().catch(() => {});
+                            // تشغيل صوت الفوز
+                            document.getElementById('winSfx').play().catch(e => {});
 
-                            // Confetti احتفالية
-                            const duration = 5000;
-                            const animationEnd = Date.now() + duration;
-                            const defaults = {
+                            // احتفالية مكثفة بالـ Confetti
+                            var duration = 5 * 1000;
+                            var animationEnd = Date.now() + duration;
+                            var defaults = {
                                 startVelocity: 30,
                                 spread: 360,
                                 ticks: 60,
-                                zIndex: 999
+                                zIndex: 0
                             };
 
-                            const interval = setInterval(() => {
-                                const timeLeft = animationEnd - Date.now();
+                            var interval = setInterval(function() {
+                                var timeLeft = animationEnd - Date.now();
                                 if (timeLeft <= 0) return clearInterval(interval);
-                                const particleCount = 50 * (timeLeft / duration);
+                                var particleCount = 50 * (timeLeft / duration);
                                 confetti(Object.assign({}, defaults, {
                                     particleCount,
                                     origin: {
@@ -656,26 +670,25 @@
                             }, 250);
                         }
                     } else {
-                        this.cards[i1].flipped = false;
-                        this.cards[i2].flipped = false;
+                        this.cards[i1].flipped = this.cards[i2].flipped = false;
                     }
                     this.flippedCards = [];
                 },
 
+                // دالة المشاركة (Web Share API)
                 shareWin() {
                     const text =
-                        `خلصت لعبة الذاكرة في ${this.gameTimer} ثانية وبـ ${this.moves} حركة فقط! 💍✨\nفرح أحمد وأمنية`;
+                        ` خلصت اللعبة  في ${this.gameTimer} ثانية وبـ ${this.moves} حركة بس! 💍  ⚡`;
                     if (navigator.share) {
                         navigator.share({
                             title: 'فرح أحمد وأمنية',
                             text: text,
                             url: window.location.href
-                        }).catch(() => {});
+                        });
                     } else {
-                        alert("انسخ الرسالة وشاركها:\n" + text);
+                        alert("انسخ النتيجة وشاركها: " + text);
                     }
                 },
-
                 submitForm() {
                     this.loading = true;
                     setTimeout(() => {
@@ -685,24 +698,22 @@
                             name: '',
                             message: ''
                         };
-                    }, 1200);
+                    }, 1500);
                 },
 
                 createPetals() {
-                    for (let i = 0; i < 18; i++) {
+                    for (let i = 0; i < 15; i++) {
                         let p = document.createElement('div');
-                        p.className = 'petal';
+                        p.className = 'petal interactive-petal';
                         p.style.left = Math.random() * 100 + 'vw';
-                        p.style.width = p.style.height = (Math.random() * 12 + 8) + 'px';
-                        p.style.animationDuration = (Math.random() * 6 + 7) + 's';
-                        p.style.animationDelay = Math.random() * 5 + 's';
-                        p.style.opacity = Math.random() * 0.3 + 0.2;
+                        p.style.width = p.style.height = (Math.random() * 10 + 10) + 'px';
+                        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
 
+                        // تفاعل عند اللمس أو مرور الماوس
                         p.addEventListener('mouseover', () => {
-                            p.style.transition = 'all 0.4s';
-                            p.style.transform = `scale(2) rotate(${Math.random() * 720}deg)`;
-                            p.style.opacity = '0';
-                            setTimeout(() => p.remove(), 600);
+                            p.style.transform = `scale(1.5) rotate(${Math.random() * 360}deg)`;
+                            p.style.opacity = '0'; // تختفي عند لمسها
+                            setTimeout(() => p.remove(), 500);
                         });
 
                         document.body.appendChild(p);
