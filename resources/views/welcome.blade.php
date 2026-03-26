@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>عقد قران أَحْمَدُ وَأُمْنِيَّةُ</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -93,32 +95,40 @@
     </style>
 </head>
 
-<body class="bg-flowers text-slate-200 antialiased" x-data="weddingApp()" x-init="init()">
+<body class="bg-flowers text-slate-200 antialiased" x-data="weddingApp()">
 
     <audio id="bgMusic" loop src="https://dl.dropboxusercontent.com/scl/fi/o56fsq5awqeqsvx4sgm4y/voice.m4a?rlkey=fn0xpuib6te3mtniytvw69pd3"></audio>
     <audio id="openSfx" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
     <audio id="flipSfx" src="https://assets.mixkit.co/active_storage/sfx/2048/2048-preview.mp3"></audio>
     <audio id="winSfx" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
-    <!-- شاشة الدخول -->
+    <!-- === تأثير فتح الدعوة (الستارة) === -->
     <div x-show="!contentVisible" class="fixed inset-0 z-[100] flex overflow-hidden">
-        <div x-show="!opened" x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
-            x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
-            class="w-1/2 h-full bg-[#0a0f1a] border-r border-yellow-500/10 z-[102] shadow-2xl"></div>
-        <div x-show="!opened" x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
-            x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
-            class="w-1/2 h-full bg-[#0a0f1a] border-l border-yellow-500/10 z-[102] shadow-2xl"></div>
+        <!-- الستارة اليمنى -->
+        <div x-show="!opened"
+             x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
+             x-transition:leave-start="translate-x-0"
+             x-transition:leave-end="translate-x-full"
+             class="w-1/2 h-full bg-[#0a0f1a] border-r border-yellow-500/10 z-[102] shadow-2xl"></div>
 
-        <div x-show="!opened" x-transition:leave="transition all duration-[1200ms] ease-in"
-            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-125"
-            class="absolute inset-0 z-[103] flex flex-col items-center justify-center text-center px-6 bg-button backdrop-blur-md">
+        <!-- الستارة اليسرى -->
+        <div x-show="!opened"
+             x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
+             x-transition:leave-start="translate-x-0"
+             x-transition:leave-end="-translate-x-full"
+             class="w-1/2 h-full bg-[#0a0f1a] border-l border-yellow-500/10 z-[102] shadow-2xl"></div>
+
+        <!-- زر فتح الدعوة -->
+        <div x-show="!opened"
+             x-transition:leave="transition all duration-[1200ms] ease-in"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-125"
+             class="absolute inset-0 z-[103] flex flex-col items-center justify-center text-center px-6 bg-button backdrop-blur-md">
+
             <button @click="openInvitation()" class="focus:outline-none">
                 <div class="w-32 h-32 rounded-full flex items-center justify-center relative transition-all duration-700
                             bg-[radial-gradient(circle_at_30%_30%,_#fe4a49_0%,_#c01c1c_60%,_#800000_100%)]
-                            shadow-[0_10px_20px_rgba(0,0,0,0.6),inset_0_2px_5px_rgba(255,255,255,0.2)]
-                            before:content-[''] before:absolute before:inset-[-5px]
-                            before:bg-[radial-gradient(circle_at_center,_#c01c1c,_#800000)]
-                            before:rounded-[45%_55%_50%_50%] before:-z-10 before:rotate-12">
+                            shadow-[0_10px_20px_rgba(0,0,0,0.6),inset_0_2px_5px_rgba(255,255,255,0.2)]">
                     <div class="flex items-center justify-center border-2 border-[#800000]/40 w-24 h-24 rounded-full
                                 shadow-[inset_0_4px_8px_rgba(0,0,0,0.5)]
                                 bg-[radial-gradient(circle_at_50%_50%,_#c01c1c_0%,_#a00000_100%)]">
@@ -126,15 +136,17 @@
                     </div>
                 </div>
             </button>
+
             <span class="font-rakkas font-medium text-red-100/80 tracking-[0.2em] my-6 text-sm uppercase animate-bounce">
                 تفضلوا بالدخول
             </span>
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
+    <!-- المحتوى الرئيسي بعد فتح الدعوة -->
     <div x-show="opened" class="relative z-10" x-cloak>
 
+        <!-- Header -->
         <header class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20">
             <div class="rings-animation mb-6">
                 <svg width="100" height="70" viewBox="0 0 120 80" fill="none">
@@ -151,15 +163,14 @@
             <div class="flex flex-row-reverse justify-center gap-3 md:gap-6 font-tajawal" data-aos="fade-up">
                 <template x-for="(val, label) in { 'يوم': countdown.days, 'ساعة': countdown.hours, 'دقيقة': countdown.minutes, 'ثانية': countdown.seconds }">
                     <div class="glass w-20 md:w-24 py-4 rounded-2xl border-yellow-500/20">
-                        <div class="text-3xl md:text-4xl font-black font-kufi text-gold"
-                             x-text="String(val).padStart(2, '0')"></div>
+                        <div class="text-3xl md:text-4xl font-black font-kufi text-gold" x-text="String(val).padStart(2, '0')"></div>
                         <div class="text-[10px] md:text-xs text-yellow-100/50 font-bold mt-1" x-text="label"></div>
                     </div>
                 </template>
             </div>
         </header>
 
-        <!-- موعدنا والمكان -->
+        <!-- تفاصيل الموعد والمكان -->
         <section class="max-w-4xl mx-auto px-6 -mt-16 relative z-20" x-show="contentVisible">
             <div class="glass p-10 rounded-[3rem] text-center border-yellow-500/20" data-aos="fade-up">
                 <div class="grid md:grid-cols-2 gap-12 divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-yellow-500/20">
@@ -182,25 +193,28 @@
         <section class="max-w-2xl mx-auto px-6 py-12" x-show="contentVisible">
             <div class="glass p-8 rounded-[2.5rem] relative" data-aos="fade-up">
                 <h2 class="text-2xl text-center mb-8 text-gold font-tajawal">بارك لنا بدعوة من قلبك</h2>
-                <form @submit.prevent="submitForm" class="space-y-4">
+
+                <form @submit.prevent="submitCongratulations" class="space-y-4">
                     <input type="text" x-model="formData.name" placeholder="اسمك الكريم" required
-                        class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none transition-all">
+                           class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none transition-all">
+
                     <textarea x-model="formData.message" placeholder="اكتب تهنئتك هنا..." required
-                        class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 h-32 text-white focus:border-yellow-500 outline-none transition-all"></textarea>
+                              class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 h-32 text-white focus:border-yellow-500 outline-none transition-all"></textarea>
+
                     <button type="submit" :disabled="loading"
-                        class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-3 rounded-xl text-slate-900 font-bold hover:opacity-90 transition-opacity disabled:opacity-50">
+                            class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-3 rounded-xl text-slate-900 font-bold hover:opacity-90 transition-opacity disabled:opacity-50">
                         إرسال التهنئة ✨
                     </button>
                 </form>
 
                 <div x-show="showSuccess" x-cloak
-                    class="absolute inset-0 bg-slate-900/95 rounded-[2.5rem] flex items-center justify-center text-center p-6 border border-yellow-500/30 z-50">
+                     class="absolute inset-0 bg-slate-900/95 rounded-[2.5rem] flex items-center justify-center text-center p-6 border border-yellow-500/30 z-50">
                     <div>
                         <div class="text-5xl mb-4">🤲</div>
                         <h3 class="text-2xl text-gold font-bold mb-2">وصلت محبتكم</h3>
                         <p class="text-gray-300">شكراً لمشاركتكم فرحتنا ودعواتكم الطيبة.</p>
                         <button @click="showSuccess = false"
-                            class="mt-6 text-yellow-500 border border-yellow-500/20 px-8 py-2 rounded-full text-sm">إغلاق</button>
+                                class="mt-6 text-yellow-500 border border-yellow-500/20 px-8 py-2 rounded-full text-sm">إغلاق</button>
                     </div>
                 </div>
             </div>
@@ -208,12 +222,12 @@
 
         <!-- لعبة الذاكرة -->
         <section class="max-w-2xl mx-auto px-6 py-24" x-show="contentVisible">
-            <div data-aos="fade-up" class="glass p-8 rounded-[2.5rem] font-tajawal">
+            <div class="glass p-8 rounded-[2.5rem] font-tajawal" data-aos="fade-up">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl text-white font-aref-ruqaa">لعبة الذاكرة</h2>
                     <p class="text-yellow-500 text-sm mt-2 font-medium">ورّينا شطارتك 💍</p>
                     <div class="flex justify-center gap-6 mt-4 text-xs text-yellow-100/60 font-bold">
-                        <span>عدد الحركات: <span class="text-white" x-text="moves"></span></span>
+                        <span>عدد الحركات: <span class="text-white" x-text="moves">0</span></span>
                     </div>
                 </div>
 
@@ -221,7 +235,7 @@
                     <template x-for="(card, index) in cards" :key="index">
                         <div @click="flipCard(index)" class="h-24 relative cursor-pointer">
                             <div class="w-full h-full transition-all duration-500 transform-style-3d relative"
-                                :class="card.flipped || card.cleared ? '[transform:rotateY(180deg)]' : ''">
+                                 :class="card.flipped || card.cleared ? '[transform:rotateY(180deg)]' : ''">
 
                                 <div class="absolute inset-0 bg-slate-800/50 rounded-xl border border-yellow-500/10 flex items-center justify-center backface-hidden">
                                     <span class="text-gold opacity-30 text-2xl">💝</span>
@@ -229,48 +243,51 @@
 
                                 <div class="absolute inset-0 bg-white rounded-xl flex items-center justify-center [transform:rotateY(180deg)] backface-hidden shadow-inner text-slate-800">
                                     <span :class="card.value.length > 10 ? 'text-[9px] leading-tight px-1' : 'text-xs md:text-sm'"
-                                        class="text-slate-800 font-bold text-center break-words overflow-hidden"
-                                        x-text="card.value"></span>
+                                          class="text-slate-800 font-bold text-center break-words overflow-hidden"
+                                          x-text="card.value"></span>
                                 </div>
                             </div>
                         </div>
                     </template>
                 </div>
 
-                <div class="text-center mt-6" x-show="cards.every(c => c.cleared)">
-                    <button @click="resetGame()" class="text-yellow-500 text-sm hover:underline">لعب مرة أخرى؟</button>
-                </div>
-
                 <!-- شاشة الفوز -->
                 <div x-show="cards.length > 0 && cards.every(c => c.cleared)"
-                    class="mt-8 p-6 rounded-3xl border border-yellow-500/30 bg-yellow-500/5 text-center relative overflow-hidden">
+                     class="mt-8 p-6 rounded-3xl border border-yellow-500/30 bg-yellow-500/5 text-center relative overflow-hidden">
 
-                    <div class="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent"></div>
+                    <h3 class="font-rakkas text-4xl text-gold mb-2">عاش يا بطل! 🎉</h3>
 
-                    <div class="relative z-10">
-                        <h3 class="font-rakkas text-4xl text-gold mb-2">عاش يا بطل! 🎉</h3>
-
-                        <div class="flex justify-center gap-4 my-4 text-white">
-                            <div class="bg-slate-900/50 px-4 py-2 rounded-xl border border-white/10">
-                                <span class="block text-[10px] text-yellow-500">الوقت</span>
-                                <span class="text-xl font-bold" x-text="gameTimer"></span> ثانية
-                            </div>
-                            <div class="bg-slate-900/50 px-4 py-2 rounded-xl border border-white/10">
-                                <span class="block text-[10px] text-yellow-500">الحركات</span>
-                                <span class="text-xl font-bold" x-text="moves"></span> حركة
-                            </div>
+                    <div class="flex justify-center gap-4 my-6 text-white">
+                        <div class="bg-slate-900/50 px-4 py-2 rounded-xl border border-white/10">
+                            <span class="block text-[10px] text-yellow-500">الوقت</span>
+                            <span class="text-xl font-bold" x-text="gameTimer"></span> ثانية
                         </div>
+                        <div class="bg-slate-900/50 px-4 py-2 rounded-xl border border-white/10">
+                            <span class="block text-[10px] text-yellow-500">الحركات</span>
+                            <span class="text-xl font-bold" x-text="moves"></span> حركة
+                        </div>
+                    </div>
 
-                        <button @click="showLeaderboard()"
-                            class="w-full mt-4 bg-slate-800 hover:bg-slate-700 border border-yellow-500/30 py-3 rounded-2xl text-yellow-300 transition-all">
-                            🏆 عرض لوحة المتصدرين
+                    <div class="flex flex-col gap-3">
+                        <button @click="saveGameScore" :disabled="scoreSaved"
+                                class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 py-3.5 rounded-2xl text-white font-bold text-lg hover:scale-105 transition-all disabled:opacity-70">
+                            <span x-text="scoreSaved ? '✅ تم حفظ الرقم القياسي' : '💾 حفظ رقمي القياسي'"></span>
+                        </button>
+
+                        <button @click="shareWin()"
+                                class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-3 rounded-2xl text-slate-900 font-bold shadow-lg hover:scale-105 transition-all">
+                            مشاركة الإنجاز
+                        </button>
+
+                        <button @click="resetGame()" class="text-yellow-400 text-sm hover:underline">
+                            العب مرة أخرى وكسر الرقم؟
                         </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- الفوتر -->
+        <!-- Footer -->
         <footer class="max-w-4xl mx-auto px-6 py-24 text-center">
             <h2 class="text-3xl text-gold mb-8 font-rakkas">موقع القاعة</h2>
             <div class="rounded-[2.5rem] overflow-hidden h-80 border border-yellow-500/10 shadow-2xl mb-12">
@@ -308,6 +325,7 @@
                 opened: false,
                 contentVisible: false,
                 musicPlaying: false,
+                scoreSaved: false,
 
                 countdown: { days: 0, hours: 0, minutes: 0, seconds: 0 },
 
@@ -324,22 +342,12 @@
 
                 pairs: [
                     { a: 'أَحْمَدُ', b: 'أُمْنِيَّةُ' },
-                    { a: '💃', b: '🕺' },
-                    { a: '🔐', b: '🔑' },
-                    { a: 'ابن الوز', b: 'عوام' },
-                    { a: 'شبيك', b: 'لبيك' },
-                    { a: 'ملوخية', b: 'أرز ' },
-                    { a: 'دقة', b: 'شطة' },
-                    { a: 'فول', b: 'طعمية' },
-                    { a: '🌙', b: '⭐' },
-                    { a: '💍', b: '💎' },
-                    { a: '🌹', b: '💖' },
-                    { a: '🕊️', b: '🌿' },
-                    { a: '☕', b: '🍪' },
-                    { a: '🏠', b: '🔑' },
-                    { a: '🎻', b: '🎵' },
-                    { a: '🌊', b: '🐚' },
-                    { a: '👰', b: '🤵' }
+                    { a: '💃', b: '🕺' }, { a: '🔐', b: '🔑' },
+                    { a: 'ابن الوز', b: 'عوام' }, { a: 'شبيك', b: 'لبيك' },
+                    { a: 'ملوخية', b: 'أرز ' }, { a: 'دقة', b: 'شطة' },
+                    { a: 'فول', b: 'طعمية' }, { a: '🌙', b: '⭐' },
+                    { a: '💍', b: '💎' }, { a: '🌹', b: '💖' },
+                    { a: '🕊️', b: '🌿' }
                 ],
 
                 init() {
@@ -349,15 +357,16 @@
                     this.createPetals();
                 },
 
+                // باقي الدوال (نفسها بدون تغيير كبير)
                 resetGame() {
                     this.moves = 0;
                     this.gameTimer = 0;
+                    this.scoreSaved = false;
                     this.flippedCards = [];
 
                     const TOTAL_PAIRS = 6;
                     let selectedPairs = [this.pairs[0]];
-                    const otherPairs = this.pairs.slice(1);
-                    const shuffled = [...otherPairs].sort(() => Math.random() - 0.5);
+                    const shuffled = [...this.pairs.slice(1)].sort(() => Math.random() - 0.5);
                     selectedPairs = selectedPairs.concat(shuffled.slice(0, TOTAL_PAIRS - 1));
 
                     let flat = [];
@@ -367,11 +376,7 @@
                     });
 
                     this.cards = flat.sort(() => Math.random() - 0.5).map((item, id) => ({
-                        id: id,
-                        value: item.v,
-                        match: item.m,
-                        flipped: false,
-                        cleared: false
+                        id, value: item.v, match: item.m, flipped: false, cleared: false
                     }));
 
                     if (this.opened) this.startGameTimer();
@@ -405,7 +410,6 @@
 
                 toggleMusic(forcePlay = false) {
                     const audio = document.getElementById('bgMusic');
-                    if (!audio) return;
                     if (forcePlay || audio.paused) {
                         audio.play().catch(() => {});
                         this.musicPlaying = true;
@@ -445,23 +449,17 @@
 
                         if (this.cards.every(c => c.cleared)) {
                             document.getElementById('winSfx')?.play().catch(() => {});
-
-                            // Confetti
+                            // Confetti celebration
                             const duration = 5000;
                             const end = Date.now() + duration;
-                            const defaults = { startVelocity: 30, spread: 360, ticks: 60 };
-
                             let interval = setInterval(() => {
                                 const timeLeft = end - Date.now();
                                 if (timeLeft <= 0) return clearInterval(interval);
-                                confetti(Object.assign({}, defaults, {
+                                confetti({
                                     particleCount: 40 * (timeLeft / duration),
                                     origin: { x: Math.random(), y: Math.random() - 0.2 }
-                                }));
+                                });
                             }, 220);
-
-                            // حفظ النتيجة بعد الفوز
-                            setTimeout(() => this.saveScore(), 1800);
                         }
                     } else {
                         this.cards[i1].flipped = false;
@@ -470,48 +468,70 @@
                     this.flippedCards = [];
                 },
 
-                saveScore() {
-                    const playerName = prompt("🎉 مبروك! اكتب اسمك ليتم حفظ الرقم القياسي:", "ضيف العريس");
-                    if (!playerName || playerName.trim() === "") return;
-
-                    const score = {
-                        name: playerName.trim(),
-                        time: this.gameTimer,
-                        moves: this.moves,
-                        date: new Date().toISOString()
-                    };
-
-                    let scores = JSON.parse(localStorage.getItem('wedding_scores')) || [];
-                    scores.push(score);
-                    scores.sort((a, b) => a.time - b.time || a.moves - b.moves);
-                    scores = scores.slice(0, 50);
-
-                    localStorage.setItem('wedding_scores', JSON.stringify(scores));
-
-                    alert(`✅ تم حفظ النتيجة بنجاح!\n${playerName} - ${this.gameTimer} ثانية - ${this.moves} حركة`);
+                saveGameScore() {
+                    if (this.scoreSaved) return;
+                    fetch('/game-score', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            player_name: this.formData.name || 'ضيف',
+                            time_seconds: this.gameTimer,
+                            moves: this.moves
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.scoreSaved = true;
+                            const toast = document.createElement('div');
+                            toast.className = 'fixed bottom-24 right-6 bg-emerald-600 text-white px-8 py-4 rounded-2xl shadow-2xl z-50';
+                            toast.textContent = '✅ تم حفظ رقمك القياسي بنجاح!';
+                            document.body.appendChild(toast);
+                            setTimeout(() => toast.remove(), 4000);
+                        } else {
+                            alert(data.message || 'فشل الحفظ');
+                        }
+                    })
+                    .catch(() => alert('خطأ في الاتصال'));
                 },
 
-                showLeaderboard() {
-                    let scores = JSON.parse(localStorage.getItem('wedding_scores')) || [];
-                    if (scores.length === 0) {
-                        alert("لا توجد نتائج محفوظة بعد!");
-                        return;
-                    }
-
-                    let message = "🏆 أفضل اللاعبين:\n\n";
-                    scores.forEach((s, i) => {
-                        message += `${i+1}. ${s.name} → ${s.time} ثانية | ${s.moves} حركة\n`;
-                    });
-                    alert(message);
-                },
-
-                submitForm() {
+                submitCongratulations() {
                     this.loading = true;
-                    setTimeout(() => {
+                    fetch('/congratulations', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify(this.formData)
+                    })
+                    .then(res => res.json())
+                    .then(data => {
                         this.loading = false;
-                        this.showSuccess = true;
-                        this.formData = { name: '', message: '' };
-                    }, 1300);
+                        if (data.success) {
+                            this.showSuccess = true;
+                            this.formData.name = '';
+                            this.formData.message = '';
+                        } else {
+                            alert(data.message || 'حدث خطأ');
+                        }
+                    })
+                    .catch(() => {
+                        this.loading = false;
+                        alert('خطأ في الاتصال');
+                    });
+                },
+
+                shareWin() {
+                    const text = `🎉 خلصت لعبة الذاكرة في ${this.gameTimer} ثانية وبـ ${this.moves} حركة!\nفرح أحمد وأمنية 💍`;
+                    if (navigator.share) navigator.share({ title: 'فرح أحمد وأمنية', text });
+                    else {
+                        navigator.clipboard.writeText(text);
+                        alert("تم النسخ:\n" + text);
+                    }
                 },
 
                 createPetals() {
@@ -521,15 +541,6 @@
                         petal.style.left = Math.random() * 100 + 'vw';
                         petal.style.width = petal.style.height = (Math.random() * 14 + 8) + 'px';
                         petal.style.animationDuration = (Math.random() * 8 + 6) + 's';
-                        petal.style.opacity = (Math.random() * 0.25 + 0.15).toString();
-
-                        petal.addEventListener('mouseenter', () => {
-                            petal.style.transition = 'all 0.6s';
-                            petal.style.transform = `scale(2.5) rotate(${Math.random()*800}deg)`;
-                            petal.style.opacity = '0';
-                            setTimeout(() => petal.remove(), 800);
-                        });
-
                         document.body.appendChild(petal);
                     }
                 }

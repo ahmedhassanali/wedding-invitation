@@ -18,3 +18,13 @@ Route::get('/leaderboard', function () {
 
     return view('leaderboard', compact('topScores'));
 })->name('leaderboard');
+
+Route::get('/', function () {
+    return view('welcome'); // or your wedding blade file
+});
+
+// Save Congratulations (تهنئة)
+Route::post('/congratulations', [CongratulationsController::class, 'store']);
+
+// Save Game Score (رقم قياسي في لعبة الذاكرة)
+Route::post('/game-score', [GameScoreController::class, 'store']);
