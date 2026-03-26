@@ -217,10 +217,7 @@
         </div>
     </div>
 
-    {{-- <button onclick="window.location.href='{{ route('leaderboard') }}'"
-        class="w-full mt-3 bg-slate-800 hover:bg-slate-700 border border-yellow-500/30 py-3 rounded-xl text-yellow-300 transition-all">
-        🏆 عرض لوحة المتصدرين
-    </button> --}}
+
 
     <div x-show="opened" class="relative z-10" x-cloak>
         <header class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20">
@@ -671,11 +668,6 @@
                                     }
                                 }));
                             }, 250);
-
-                            // حفظ النتيجة تلقائياً بعد 1.5 ثانية
-                            setTimeout(() => {
-                                this.saveGameScore();
-                            }, 1500);
                         }
                     } else {
                         this.cards[i1].flipped = this.cards[i2].flipped = false;
@@ -699,68 +691,15 @@
                 },
                 submitForm() {
                     this.loading = true;
-
-                    fetch('/api/congratulations', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                    'content')
-                            },
-                            body: JSON.stringify({
-                                name: this.formData.name,
-                                message: this.formData.message
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            this.loading = false;
-                            if (data.success) {
-                                this.showSuccess = true;
-                                this.formData = {
-                                    name: '',
-                                    message: ''
-                                };
-                            } else {
-                                alert('حدث خطأ: ' + (data.message || 'حاول مرة أخرى'));
-                            }
-                        })
-                        .catch(err => {
-                            this.loading = false;
-                            alert('فشل في الإرسال، تأكد من الاتصال بالإنترنت');
-                        });
-                }
-
-                saveGameScore() {
-                    const playerName = prompt("مبروك! 🎉\nاكتب اسمك عشان نحفظ رقمك القياسي:", "ضيف");
-
-                    if (!playerName || playerName.trim() === "") return;
-
-                    fetch('/api/game-scores', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                    'content')
-                            },
-                            body: JSON.stringify({
-                                player_name: playerName.trim(),
-                                time_seconds: this.gameTimer,
-                                moves: this.moves
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                if (confirm(`✅ تم حفظ النتيجة!\nهل تريد مشاهدة لوحة المتصدرين الآن؟`)) {
-                                    window.location.href = '/leaderboard';
-                                }
-                            }
-                        })
-                        .catch(() => {});
-
-
-                }
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.showSuccess = true;
+                        this.formData = {
+                            name: '',
+                            message: ''
+                        };
+                    }, 1500);
+                },
 
                 createPetals() {
                     for (let i = 0; i < 15; i++) {
