@@ -11,8 +11,8 @@ class CongratulationsController extends Controller
     {
         // Validation
         $request->validate([
-            'name'    => 'required|string|max:255',
-            'message' => 'required|string|max:1000',
+            'name'    => 'required|string',
+            'message' => 'required|string',
         ]);
 
         $ip = $request->ip();

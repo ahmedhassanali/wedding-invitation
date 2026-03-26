@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeddingController;
+use App\Http\Controllers\CongratulationsController;
+use App\Http\Controllers\GameScoreController;
+
 Route::get('/', function () {
     return view('welcome');
 });
