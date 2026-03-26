@@ -217,10 +217,7 @@
         </div>
     </div>
 
-    {{-- <button onclick="window.location.href='{{ route('leaderboard') }}'"
-        class="w-full mt-3 bg-slate-800 hover:bg-slate-700 border border-yellow-500/30 py-3 rounded-xl text-yellow-300 transition-all">
-        🏆 عرض لوحة المتصدرين
-    </button> --}}
+
 
     <div x-show="opened" class="relative z-10" x-cloak>
         <header class="min-h-screen flex flex-col items-center justify-center text-center px-4 py-20">
@@ -432,19 +429,17 @@
                 timerInterval: null,
                 loading: false,
                 showSuccess: false,
+                showWinPopupClosed: false,
+
                 formData: {
                     name: '',
                     message: ''
                 },
-                pairs: [
-                    // الزوج الأساسي – سيبقى دائمًا
-                    {
+
+                pairs: [{
                         a: 'أَحْمَدُ',
                         b: 'أُمْنِيَّةُ'
                     },
-
-                    // باقي الأزواج المرشحة للاختيار العشوائي
-
                     {
                         a: '💃',
                         b: '🕺'
@@ -476,65 +471,63 @@
                     {
                         a: '🌙',
                         b: '⭐'
-                    }, // القمر ونجومه
+                    },
                     {
                         a: '💍',
                         b: '💎'
-                    }, // الدبلة والماس
+                    },
                     {
                         a: '🌹',
                         b: '💖'
-                    }, // الورد والحب
+                    },
                     {
                         a: '🕊️',
                         b: '🌿'
-                    }, // حمامة السلام والغصن
+                    },
                     {
                         a: '☕',
                         b: '🍪'
-                    }, // القهوة والتحلية
+                    },
                     {
                         a: '🏠',
                         b: '🔑'
-                    }, // البيت والمفتاح
+                    },
                     {
                         a: '🎻',
                         b: '🎵'
-                    }, // الموسيقى واللحن
+                    },
                     {
                         a: '🌊',
                         b: '🐚'
-                    }, // البحر والقوقعة
+                    },
                     {
                         a: '👰',
                         b: '🤵'
-                    } // العروس والعريس
+                    }
                 ],
 
-                // ────────────────────────────────────────────────
-                // استبدل دالة resetGame بالنسخة التالية
-                // ────────────────────────────────────────────────
+                init() {
+                    AOS.init({
+                        duration: 1000,
+                        once: true
+                    });
+                    this.resetGame();
+                    this.startCountdown();
+                    this.createPetals();
+                },
 
                 resetGame() {
                     this.moves = 0;
                     this.gameTimer = 0;
+                    this.flippedCards = [];
 
-                    // ────────────────────────────────────────────────
-                    // عدد الأزواج اللي عايزينه دائمًا = 6 (→ 12 كارت)
-                    // ────────────────────────────────────────────────
                     const TOTAL_PAIRS = 6;
-
-                    // 1. نبدأ بالزوج الثابت (أحمد وأمنية)
                     let selectedPairs = [this.pairs[0]];
 
-                    // 2. نختار 5 أزواج عشوائية من الباقي
                     const otherPairs = this.pairs.slice(1);
                     const shuffled = [...otherPairs].sort(() => Math.random() - 0.5);
-
-                    // نأخذ أول 5 من المخلوطين
                     selectedPairs = selectedPairs.concat(shuffled.slice(0, TOTAL_PAIRS - 1));
 
-                    // 3. تحويل الأزواج لكروت (كل زوج → كارتين)
                     let flat = [];
                     selectedPairs.forEach(p => {
                         flat.push({
@@ -547,7 +540,6 @@
                         });
                     });
 
-                    // 4. خلط الكروت عشوائيًا
                     this.cards = flat.sort(() => Math.random() - 0.5).map((item, id) => ({
                         id,
                         value: item.v,
@@ -556,41 +548,27 @@
                         cleared: false
                     }));
 
-                    // إعادة تشغيل التايمر لو اللعبة مفتوحة
                     if (this.opened) this.startGameTimer();
-
-                    // لو عندك متغير لإغلاق نافذة الفوز، رجّعه false
-                    this.showWinPopupClosed = false;
                 },
-                init() {
-                    AOS.init({
-                        duration: 1000,
-                        once: true
-                    });
-                    this.resetGame();
-                    this.startCountdown();
-                    this.createPetals();
-                },
-
-                // ... كل المتغيرات السابقة
-                showWinPopupClosed: false, // ← أضف هذا السطر
-
-
 
                 startCountdown() {
-                    const weddingDate = new Date('April 3, 2026 15:00:00').getTime();
+                    const weddingDate = new Date('2026-04-03T15:00:00').getTime();
                     setInterval(() => {
                         const now = new Date().getTime();
                         const dist = weddingDate - now;
+
                         this.countdown.days = Math.floor(dist / (1000 * 60 * 60 * 24));
                         this.countdown.hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         this.countdown.minutes = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
                         this.countdown.seconds = Math.floor((dist % (1000 * 60)) / 1000);
                     }, 1000);
                 },
+
                 openInvitation() {
                     this.opened = true;
-                    document.getElementById('openSfx').play().catch(e => {});
+                    const openSfx = document.getElementById('openSfx');
+                    if (openSfx) openSfx.play().catch(() => {});
+
                     confetti({
                         particleCount: 150,
                         spread: 70,
@@ -607,16 +585,20 @@
                         this.startGameTimer();
                     }, 3000);
                 },
+
                 toggleMusic(forcePlay = false) {
                     const audio = document.getElementById('bgMusic');
+                    if (!audio) return;
+
                     if (forcePlay || audio.paused) {
-                        audio.play().catch(e => {});
+                        audio.play().catch(() => {});
                         this.musicPlaying = true;
                     } else {
                         audio.pause();
                         this.musicPlaying = false;
                     }
                 },
+
                 startGameTimer() {
                     if (this.timerInterval) clearInterval(this.timerInterval);
                     this.timerInterval = setInterval(() => {
@@ -629,40 +611,41 @@
                 },
 
                 flipCard(index) {
-                    if (this.cards[index].flipped || this.cards[index].cleared || this.flippedCards.length === 2) return;
+                    const card = this.cards[index];
+                    if (card.flipped || card.cleared || this.flippedCards.length === 2) return;
 
-                    this.cards[index].flipped = true;
+                    card.flipped = true;
                     this.flippedCards.push(index);
-                    document.getElementById('flipSfx').play().catch(e => {});
+                    document.getElementById('flipSfx')?.play().catch(() => {});
 
                     if (this.flippedCards.length === 2) {
                         this.moves++;
                         setTimeout(() => this.checkMatch(), 700);
                     }
                 },
+
                 checkMatch() {
-                    let [i1, i2] = this.flippedCards;
+                    const [i1, i2] = this.flippedCards;
                     if (this.cards[i1].match === this.cards[i2].value) {
                         this.cards[i1].cleared = this.cards[i2].cleared = true;
 
                         if (this.cards.every(c => c.cleared)) {
-                            // تشغيل صوت الفوز
-                            document.getElementById('winSfx').play().catch(e => {});
+                            document.getElementById('winSfx')?.play().catch(() => {});
 
-                            // احتفالية مكثفة بالـ Confetti
-                            var duration = 5 * 1000;
-                            var animationEnd = Date.now() + duration;
-                            var defaults = {
+                            // Confetti احتفالية
+                            const duration = 5000;
+                            const animationEnd = Date.now() + duration;
+                            const defaults = {
                                 startVelocity: 30,
                                 spread: 360,
                                 ticks: 60,
-                                zIndex: 0
+                                zIndex: 999
                             };
 
-                            var interval = setInterval(function() {
-                                var timeLeft = animationEnd - Date.now();
+                            const interval = setInterval(() => {
+                                const timeLeft = animationEnd - Date.now();
                                 if (timeLeft <= 0) return clearInterval(interval);
-                                var particleCount = 50 * (timeLeft / duration);
+                                const particleCount = 50 * (timeLeft / duration);
                                 confetti(Object.assign({}, defaults, {
                                     particleCount,
                                     origin: {
@@ -671,110 +654,55 @@
                                     }
                                 }));
                             }, 250);
-
-                            // حفظ النتيجة تلقائياً بعد 1.5 ثانية
-                            setTimeout(() => {
-                                this.saveGameScore();
-                            }, 1500);
                         }
                     } else {
-                        this.cards[i1].flipped = this.cards[i2].flipped = false;
+                        this.cards[i1].flipped = false;
+                        this.cards[i2].flipped = false;
                     }
                     this.flippedCards = [];
                 },
 
-                // دالة المشاركة (Web Share API)
                 shareWin() {
                     const text =
-                        ` خلصت اللعبة  في ${this.gameTimer} ثانية وبـ ${this.moves} حركة بس! 💍  ⚡`;
+                        `خلصت لعبة الذاكرة في ${this.gameTimer} ثانية وبـ ${this.moves} حركة فقط! 💍✨\nفرح أحمد وأمنية`;
                     if (navigator.share) {
                         navigator.share({
                             title: 'فرح أحمد وأمنية',
                             text: text,
                             url: window.location.href
-                        });
+                        }).catch(() => {});
                     } else {
-                        alert("انسخ النتيجة وشاركها: " + text);
+                        alert("انسخ الرسالة وشاركها:\n" + text);
                     }
                 },
+
                 submitForm() {
                     this.loading = true;
-
-                    fetch('/api/congratulations', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                    'content')
-                            },
-                            body: JSON.stringify({
-                                name: this.formData.name,
-                                message: this.formData.message
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            this.loading = false;
-                            if (data.success) {
-                                this.showSuccess = true;
-                                this.formData = {
-                                    name: '',
-                                    message: ''
-                                };
-                            } else {
-                                alert('حدث خطأ: ' + (data.message || 'حاول مرة أخرى'));
-                            }
-                        })
-                        .catch(err => {
-                            this.loading = false;
-                            alert('فشل في الإرسال، تأكد من الاتصال بالإنترنت');
-                        });
-                }
-
-                saveGameScore() {
-                    const playerName = prompt("مبروك! 🎉\nاكتب اسمك عشان نحفظ رقمك القياسي:", "ضيف");
-
-                    if (!playerName || playerName.trim() === "") return;
-
-                    fetch('/api/game-scores', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                    'content')
-                            },
-                            body: JSON.stringify({
-                                player_name: playerName.trim(),
-                                time_seconds: this.gameTimer,
-                                moves: this.moves
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                if (confirm(`✅ تم حفظ النتيجة!\nهل تريد مشاهدة لوحة المتصدرين الآن؟`)) {
-                                    window.location.href = '/leaderboard';
-                                }
-                            }
-                        })
-                        .catch(() => {});
-
-
-                }
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.showSuccess = true;
+                        this.formData = {
+                            name: '',
+                            message: ''
+                        };
+                    }, 1200);
+                },
 
                 createPetals() {
-                    for (let i = 0; i < 15; i++) {
+                    for (let i = 0; i < 18; i++) {
                         let p = document.createElement('div');
-                        p.className = 'petal interactive-petal';
+                        p.className = 'petal';
                         p.style.left = Math.random() * 100 + 'vw';
-                        p.style.width = p.style.height = (Math.random() * 10 + 10) + 'px';
-                        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                        p.style.width = p.style.height = (Math.random() * 12 + 8) + 'px';
+                        p.style.animationDuration = (Math.random() * 6 + 7) + 's';
+                        p.style.animationDelay = Math.random() * 5 + 's';
+                        p.style.opacity = Math.random() * 0.3 + 0.2;
 
-                        // تفاعل عند اللمس أو مرور الماوس
                         p.addEventListener('mouseover', () => {
-                            p.style.transform = `scale(1.5) rotate(${Math.random() * 360}deg)`;
-                            p.style.opacity = '0'; // تختفي عند لمسها
-                            setTimeout(() => p.remove(), 500);
+                            p.style.transition = 'all 0.4s';
+                            p.style.transform = `scale(2) rotate(${Math.random() * 720}deg)`;
+                            p.style.opacity = '0';
+                            setTimeout(() => p.remove(), 600);
                         });
 
                         document.body.appendChild(p);
