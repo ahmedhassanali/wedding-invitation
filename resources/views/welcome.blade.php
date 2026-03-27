@@ -14,12 +14,16 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&family=Rakkas&family=Reem+Kufi:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&family=Rakkas&family=Reem+Kufi:wght@400;700&family=Great+Vibes&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
 
     <style>
-        [x-cloak] { display: none !important; }
+        [x-cloak] {
+            display: none !important;
+        }
 
         body {
             font-family: 'Tajawal', sans-serif;
@@ -27,10 +31,21 @@
             overflow-x: hidden;
         }
 
-        .font-rakkas { font-family: 'Rakkas', serif; }
-        .font-aref-ruqaa { font-family: "Aref Ruqaa", serif; }
-        .font-kufi { font-family: 'Reem Kufi', sans-serif; }
-        .font-parisienne { font-family: "Parisienne", cursive; }
+        .font-rakkas {
+            font-family: 'Rakkas', serif;
+        }
+
+        .font-aref-ruqaa {
+            font-family: "Aref Ruqaa", serif;
+        }
+
+        .font-kufi {
+            font-family: 'Reem Kufi', sans-serif;
+        }
+
+        .font-parisienne {
+            font-family: "Parisienne", cursive;
+        }
 
         .bg-flowers {
             background-image: linear-gradient(rgba(10, 15, 26, 0.8), rgba(10, 15, 26, 0.95)),
@@ -61,7 +76,9 @@
         }
 
         @keyframes shineGold {
-            to { background-position: 200% center; }
+            to {
+                background-position: 200% center;
+            }
         }
 
         .rings-animation {
@@ -69,12 +86,24 @@
         }
 
         @keyframes ring-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
-        .backface-hidden { backface-visibility: hidden; }
-        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
 
         .petal {
             position: fixed;
@@ -88,56 +117,63 @@
         }
 
         @keyframes petalFall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 
 <body class="bg-flowers text-slate-200 antialiased" x-data="weddingApp()">
 
-    <audio id="bgMusic" loop src="https://dl.dropboxusercontent.com/scl/fi/o56fsq5awqeqsvx4sgm4y/voice.m4a?rlkey=fn0xpuib6te3mtniytvw69pd3"></audio>
+    {{-- <audio id="bgMusic" loop
+        src="https://dl.dropboxusercontent.com/scl/fi/o56fsq5awqeqsvx4sgm4y/voice.m4a?rlkey=fn0xpuib6te3mtniytvw69pd3"></audio> --}}
     <audio id="openSfx" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
     <audio id="flipSfx" src="https://assets.mixkit.co/active_storage/sfx/2048/2048-preview.mp3"></audio>
     <audio id="winSfx" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
+    <audio id="bgMusic" loop
+        src="{{ asset('voice/voice.mp3') }}"></audio>
     <!-- === تأثير فتح الدعوة (الستارة) === -->
-    <div x-show="!contentVisible" class="fixed inset-0 z-[100] flex overflow-hidden">
-        <!-- الستارة اليمنى -->
-        <div x-show="!opened"
-             x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
-             x-transition:leave-start="translate-x-0"
-             x-transition:leave-end="translate-x-full"
-             class="w-1/2 h-full bg-[#0a0f1a] border-r border-yellow-500/10 z-[102] shadow-2xl"></div>
+    <div x-show="!contentVisible" class="fixed inset-0 z-[100] flex overflow-hidden ">
+        <div x-show="!opened" x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
+            x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+            class="w-1/2 h-full bg-[#0a0f1a] border-r border-yellow-500/10 z-[102] shadow-2xl"></div>
+        <div x-show="!opened" x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
+            x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
+            class="w-1/2 h-full bg-[#0a0f1a] border-l border-yellow-500/10 z-[102] shadow-2xl"></div>
 
-        <!-- الستارة اليسرى -->
-        <div x-show="!opened"
-             x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
-             x-transition:leave-start="translate-x-0"
-             x-transition:leave-end="-translate-x-full"
-             class="w-1/2 h-full bg-[#0a0f1a] border-l border-yellow-500/10 z-[102] shadow-2xl"></div>
-
-        <!-- زر فتح الدعوة -->
-        <div x-show="!opened"
-             x-transition:leave="transition all duration-[1200ms] ease-in"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-125"
-             class="absolute inset-0 z-[103] flex flex-col items-center justify-center text-center px-6 bg-button backdrop-blur-md">
-
-            <button @click="openInvitation()" class="focus:outline-none">
-                <div class="w-32 h-32 rounded-full flex items-center justify-center relative transition-all duration-700
-                            bg-[radial-gradient(circle_at_30%_30%,_#fe4a49_0%,_#c01c1c_60%,_#800000_100%)]
-                            shadow-[0_10px_20px_rgba(0,0,0,0.6),inset_0_2px_5px_rgba(255,255,255,0.2)]">
-                    <div class="flex items-center justify-center border-2 border-[#800000]/40 w-24 h-24 rounded-full
-                                shadow-[inset_0_4px_8px_rgba(0,0,0,0.5)]
-                                bg-[radial-gradient(circle_at_50%_50%,_#c01c1c_0%,_#a00000_100%)]">
+        <div x-show="!opened" x-transition:leave="transition all duration-[1200ms] ease-in"
+            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-125"
+            class="absolute inset-0 z-[103] flex flex-col items-center justify-center text-center px-6 bg-button">
+            <button @click="openInvitation()" class="...">
+                <div
+                    class="w-32 h-32 rounded-full flex items-center justify-center relative transition-all duration-700
+                            bg-[radial-gradient(circle_at_30%_30%,_#fe4a49_0%,_#c01c1c_60%,_#800000_100%)]
+                            shadow-[0_10px_20px_rgba(0,0,0,0.6),inset_0_2px_5px_rgba(255,255,255,0.2)]
+                            before:content-[''] before:absolute before:inset-[-5px]
+                            before:bg-[radial-gradient(circle_at_center,_#c01c1c,_#800000)]
+                            before:rounded-[45%_55%_50%_50%] before:-z-10 before:rotate-12">
+                    <div
+                        class="flex items-center justify-center border-2 border-[#800000]/40 w-24 h-24 rounded-full
+                    shadow-[inset_0_4px_8px_rgba(0,0,0,0.5)]
+                    bg-[radial-gradient(circle_at_50%_50%,_#c01c1c_0%,_#a00000_100%)]">
                         <span class="text-[#fcf6ba]/90 font-parisienne font-bold text-3xl select-none">A&O</span>
                     </div>
                 </div>
             </button>
-
-            <span class="font-rakkas font-medium text-red-100/80 tracking-[0.2em] my-6 text-sm uppercase animate-bounce">
+            <span
+                class="font-rakkas font-medium text-red-100/80 tracking-[0.2em] my-6 text-sm uppercase animate-bounce">
                 تفضلوا بالدخول
             </span>
         </div>
@@ -161,9 +197,11 @@
             <p class="font-kufi text-2xl text-yellow-200/80 mb-8" data-aos="fade-up">3 أبريل • 2026</p>
 
             <div class="flex flex-row-reverse justify-center gap-3 md:gap-6 font-tajawal" data-aos="fade-up">
-                <template x-for="(val, label) in { 'يوم': countdown.days, 'ساعة': countdown.hours, 'دقيقة': countdown.minutes, 'ثانية': countdown.seconds }">
+                <template
+                    x-for="(val, label) in { 'يوم': countdown.days, 'ساعة': countdown.hours, 'دقيقة': countdown.minutes, 'ثانية': countdown.seconds }">
                     <div class="glass w-20 md:w-24 py-4 rounded-2xl border-yellow-500/20">
-                        <div class="text-3xl md:text-4xl font-black font-kufi text-gold" x-text="String(val).padStart(2, '0')"></div>
+                        <div class="text-3xl md:text-4xl font-black font-kufi text-gold"
+                            x-text="String(val).padStart(2, '0')"></div>
                         <div class="text-[10px] md:text-xs text-yellow-100/50 font-bold mt-1" x-text="label"></div>
                     </div>
                 </template>
@@ -173,7 +211,8 @@
         <!-- تفاصيل الموعد والمكان -->
         <section class="max-w-4xl mx-auto px-6 -mt-16 relative z-20" x-show="contentVisible">
             <div class="glass p-10 rounded-[3rem] text-center border-yellow-500/20" data-aos="fade-up">
-                <div class="grid md:grid-cols-2 gap-12 divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-yellow-500/20">
+                <div
+                    class="grid md:grid-cols-2 gap-12 divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-yellow-500/20">
                     <div class="pb-8 md:pb-0">
                         <span class="text-3xl mb-4 block">🕒</span>
                         <h3 class="text-yellow-500 text-xl font-bold mb-2">موعدنا</h3>
@@ -196,25 +235,25 @@
 
                 <form @submit.prevent="submitCongratulations" class="space-y-4">
                     <input type="text" x-model="formData.name" placeholder="اسمك الكريم" required
-                           class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none transition-all">
+                        class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none transition-all">
 
                     <textarea x-model="formData.message" placeholder="اكتب تهنئتك هنا..." required
-                              class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 h-32 text-white focus:border-yellow-500 outline-none transition-all"></textarea>
+                        class="w-full bg-slate-900/50 border border-yellow-500/20 rounded-xl px-4 py-3 h-32 text-white focus:border-yellow-500 outline-none transition-all"></textarea>
 
                     <button type="submit" :disabled="loading"
-                            class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-3 rounded-xl text-slate-900 font-bold hover:opacity-90 transition-opacity disabled:opacity-50">
+                        class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-3 rounded-xl text-slate-900 font-bold hover:opacity-90 transition-opacity disabled:opacity-50">
                         إرسال التهنئة ✨
                     </button>
                 </form>
 
                 <div x-show="showSuccess" x-cloak
-                     class="absolute inset-0 bg-slate-900/95 rounded-[2.5rem] flex items-center justify-center text-center p-6 border border-yellow-500/30 z-50">
+                    class="absolute inset-0 bg-slate-900/95 rounded-[2.5rem] flex items-center justify-center text-center p-6 border border-yellow-500/30 z-50">
                     <div>
                         <div class="text-5xl mb-4">🤲</div>
-                        <h3 class="text-2xl text-gold font-bold mb-2">وصلت محبتكم</h3>
+                        <h3 class="text-2xl text-gold font-bold mb-2">وصلت دعواتك الرقيقة</h3>
                         <p class="text-gray-300">شكراً لمشاركتكم فرحتنا ودعواتكم الطيبة.</p>
                         <button @click="showSuccess = false"
-                                class="mt-6 text-yellow-500 border border-yellow-500/20 px-8 py-2 rounded-full text-sm">إغلاق</button>
+                            class="mt-6 text-yellow-500 border border-yellow-500/20 px-8 py-2 rounded-full text-sm">إغلاق</button>
                     </div>
                 </div>
             </div>
@@ -224,8 +263,9 @@
         <section class="max-w-2xl mx-auto px-6 py-24" x-show="contentVisible">
             <div class="glass p-8 rounded-[2.5rem] font-tajawal" data-aos="fade-up">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl text-white font-aref-ruqaa">لعبة الذاكرة</h2>
-                    <p class="text-yellow-500 text-sm mt-2 font-medium">ورّينا شطارتك 💍</p>
+                    <h2 class="text-3xl text-white font-aref-ruqaa">النص التاني فين؟</h2>
+                    <p class="text-yellow-500 text-sm mt-2 font-medium"> كل حاجة وليها اللي يكملها.. ورّينا شطارتك💍
+                    </p>
                     <div class="flex justify-center gap-6 mt-4 text-xs text-yellow-100/60 font-bold">
                         <span>عدد الحركات: <span class="text-white" x-text="moves">0</span></span>
                     </div>
@@ -235,16 +275,19 @@
                     <template x-for="(card, index) in cards" :key="index">
                         <div @click="flipCard(index)" class="h-24 relative cursor-pointer">
                             <div class="w-full h-full transition-all duration-500 transform-style-3d relative"
-                                 :class="card.flipped || card.cleared ? '[transform:rotateY(180deg)]' : ''">
+                                :class="card.flipped || card.cleared ? '[transform:rotateY(180deg)]' : ''">
 
-                                <div class="absolute inset-0 bg-slate-800/50 rounded-xl border border-yellow-500/10 flex items-center justify-center backface-hidden">
-                                    <span class="text-gold opacity-30 text-2xl">💝</span>
+                                <div
+                                    class="absolute inset-0 bg-slate-800/50 rounded-xl border border-yellow-500/10 flex items-center justify-center backface-hidden">
+                                    <span class="text-gold opacity-30 text-2xl">❤️</span>
                                 </div>
 
-                                <div class="absolute inset-0 bg-white rounded-xl flex items-center justify-center [transform:rotateY(180deg)] backface-hidden shadow-inner text-slate-800">
-                                    <span :class="card.value.length > 10 ? 'text-[9px] leading-tight px-1' : 'text-xs md:text-sm'"
-                                          class="text-slate-800 font-bold text-center break-words overflow-hidden"
-                                          x-text="card.value"></span>
+                                <div
+                                    class="absolute inset-0 bg-white rounded-xl flex items-center justify-center [transform:rotateY(180deg)] backface-hidden shadow-inner">
+                                    <span
+                                        :class="['أَحْمَدُ', 'أُمْنِيَّةُ'].includes(card.value) ?
+                                            'text-yellow-700 font-bold text-xs' : 'text-3xl'"
+                                        x-text="card.value"></span>
                                 </div>
                             </div>
                         </div>
@@ -252,37 +295,34 @@
                 </div>
 
                 <!-- شاشة الفوز -->
+                <!-- شاشة الفوز -->
                 <div x-show="cards.length > 0 && cards.every(c => c.cleared)"
-                     class="mt-8 p-6 rounded-3xl border border-yellow-500/30 bg-yellow-500/5 text-center relative overflow-hidden">
+                    class="mt-8 p-8 rounded-3xl border border-yellow-500/30 bg-yellow-500/5 text-center relative overflow-hidden">
 
-                    <h3 class="font-rakkas text-4xl text-gold mb-2">عاش يا بطل! 🎉</h3>
+                    <h3 class="font-rakkas text-5xl text-gold mb-3">عاش 🎉</h3>
+                    <p class="text-yellow-200 mb-6">خلصت اللعبة بنجاح!</p>
 
-                    <div class="flex justify-center gap-4 my-6 text-white">
-                        <div class="bg-slate-900/50 px-4 py-2 rounded-xl border border-white/10">
-                            <span class="block text-[10px] text-yellow-500">الوقت</span>
-                            <span class="text-xl font-bold" x-text="gameTimer"></span> ثانية
+                    <div class="flex justify-center gap-6 my-8 text-white">
+                        <div class="bg-slate-900/60 px-6 py-4 rounded-2xl border border-white/10">
+                            <span class="block text-xs text-yellow-400">الوقت</span>
+                            <span class="text-3xl font-bold text-gold" x-text="gameTimer"></span>
+                            <span class="text-sm text-yellow-100/70">ثانية</span>
                         </div>
-                        <div class="bg-slate-900/50 px-4 py-2 rounded-xl border border-white/10">
-                            <span class="block text-[10px] text-yellow-500">الحركات</span>
-                            <span class="text-xl font-bold" x-text="moves"></span> حركة
+                        <div class="bg-slate-900/60 px-6 py-4 rounded-2xl border border-white/10">
+                            <span class="block text-xs text-yellow-400">الحركات</span>
+                            <span class="text-3xl font-bold text-gold" x-text="moves"></span>
+                            <span class="text-sm text-yellow-100/70">حركة</span>
                         </div>
                     </div>
 
-                    <div class="flex flex-col gap-3">
-                        <button @click="saveGameScore" :disabled="scoreSaved"
-                                class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 py-3.5 rounded-2xl text-white font-bold text-lg hover:scale-105 transition-all disabled:opacity-70">
-                            <span x-text="scoreSaved ? '✅ تم حفظ الرقم القياسي' : '💾 حفظ رقمي القياسي'"></span>
-                        </button>
+                    <button @click="shareWin()"
+                        class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-4 rounded-2xl text-slate-900 font-bold text-lg shadow-lg hover:scale-105 transition-all">
+                        اسرع حد هيحصل علي هدية شارك النتيجة مع العروسين 💌
+                    </button>
 
-                        <button @click="shareWin()"
-                                class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-3 rounded-2xl text-slate-900 font-bold shadow-lg hover:scale-105 transition-all">
-                            مشاركة الإنجاز
-                        </button>
-
-                        <button @click="resetGame()" class="text-yellow-400 text-sm hover:underline">
-                            العب مرة أخرى وكسر الرقم؟
-                        </button>
-                    </div>
+                    <button @click="resetGame()" class="mt-4 text-yellow-400 text-sm hover:underline">
+                        العب مرة تانية وكسر رقمك؟
+                    </button>
                 </div>
             </div>
         </section>
@@ -306,7 +346,8 @@
             class="fixed bottom-6 right-6 z-50 glass w-12 h-12 rounded-full flex items-center justify-center text-gold border-yellow-500/30">
             <template x-if="!musicPlaying">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+                    <path
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
                 </svg>
             </template>
             <template x-if="musicPlaying">
@@ -327,7 +368,12 @@
                 musicPlaying: false,
                 scoreSaved: false,
 
-                countdown: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+                countdown: {
+                    days: 0,
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0
+                },
 
                 cards: [],
                 flippedCards: [],
@@ -338,26 +384,71 @@
                 loading: false,
                 showSuccess: false,
 
-                formData: { name: '', message: '' },
+                formData: {
+                    name: '',
+                    message: ''
+                },
 
-                pairs: [
-                    { a: 'أَحْمَدُ', b: 'أُمْنِيَّةُ' },
-                    { a: '💃', b: '🕺' }, { a: '🔐', b: '🔑' },
-                    { a: 'ابن الوز', b: 'عوام' }, { a: 'شبيك', b: 'لبيك' },
-                    { a: 'ملوخية', b: 'أرز ' }, { a: 'دقة', b: 'شطة' },
-                    { a: 'فول', b: 'طعمية' }, { a: '🌙', b: '⭐' },
-                    { a: '💍', b: '💎' }, { a: '🌹', b: '💖' },
-                    { a: '🕊️', b: '🌿' }
+                pairs: [{
+                        a: 'أَحْمَدُ',
+                        b: 'أُمْنِيَّةُ'
+                    },
+                    {
+                        a: '💃',
+                        b: '🕺'
+                    },
+                    {
+                        a: '🔐',
+                        b: '🔑'
+                    },
+                    {
+                        a: '🌙',
+                        b: '⭐'
+                    },
+                    {
+                        a: '💍',
+                        b: '💎'
+                    },
+                    {
+                        a: '🌹',
+                        b: '❤️'
+                    },
+                    {
+                        a: 'A',
+                        b: 'O'
+                    },
+                    {
+                        a: 'Ahmed',
+                        b: 'Omneya'
+                    },
+                    {
+                        a: '👰',
+                        b: '🤵'
+                    },
+                    {
+                        a: '✍️',
+                        b: '📖'
+                    },
+                    {
+                        a: '🌞',
+                        b: '🌕'
+                    },
+                    {
+                        a: '🌧️',
+                        b: '☂️'
+                    }
                 ],
 
                 init() {
-                    AOS.init({ duration: 1000, once: true });
+                    AOS.init({
+                        duration: 1000,
+                        once: true
+                    });
                     this.resetGame();
                     this.startCountdown();
                     this.createPetals();
                 },
 
-                // باقي الدوال (نفسها بدون تغيير كبير)
                 resetGame() {
                     this.moves = 0;
                     this.gameTimer = 0;
@@ -371,12 +462,22 @@
 
                     let flat = [];
                     selectedPairs.forEach(p => {
-                        flat.push({ v: p.a, m: p.b });
-                        flat.push({ v: p.b, m: p.a });
+                        flat.push({
+                            v: p.a,
+                            m: p.b
+                        });
+                        flat.push({
+                            v: p.b,
+                            m: p.a
+                        });
                     });
 
                     this.cards = flat.sort(() => Math.random() - 0.5).map((item, id) => ({
-                        id, value: item.v, match: item.m, flipped: false, cleared: false
+                        id,
+                        value: item.v,
+                        match: item.m,
+                        flipped: false,
+                        cleared: false
                     }));
 
                     if (this.opened) this.startGameTimer();
@@ -387,8 +488,8 @@
                     setInterval(() => {
                         const now = new Date().getTime();
                         const dist = weddingDate - now;
-                        this.countdown.days    = Math.floor(dist / (1000 * 60 * 60 * 24));
-                        this.countdown.hours   = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        this.countdown.days = Math.floor(dist / (1000 * 60 * 60 * 24));
+                        this.countdown.hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         this.countdown.minutes = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
                         this.countdown.seconds = Math.floor((dist % (1000 * 60)) / 1000);
                     }, 1000);
@@ -398,7 +499,14 @@
                     this.opened = true;
                     document.getElementById('openSfx')?.play().catch(() => {});
 
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#bf953f', '#ff4d6d', '#ffffff'] });
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: {
+                            y: 0.6
+                        },
+                        colors: ['#bf953f', '#ff4d6d', '#ffffff']
+                    });
 
                     setTimeout(() => {
                         this.contentVisible = true;
@@ -449,7 +557,8 @@
 
                         if (this.cards.every(c => c.cleared)) {
                             document.getElementById('winSfx')?.play().catch(() => {});
-                            // Confetti celebration
+
+                            // احتفال بالكونفيتي
                             const duration = 5000;
                             const end = Date.now() + duration;
                             let interval = setInterval(() => {
@@ -457,9 +566,15 @@
                                 if (timeLeft <= 0) return clearInterval(interval);
                                 confetti({
                                     particleCount: 40 * (timeLeft / duration),
-                                    origin: { x: Math.random(), y: Math.random() - 0.2 }
+                                    origin: {
+                                        x: Math.random(),
+                                        y: Math.random() - 0.2
+                                    }
                                 });
                             }, 220);
+
+                            // حفظ النتيجة تلقائياً
+                            setTimeout(() => this.autoSaveScore(), 800);
                         }
                     } else {
                         this.cards[i1].flipped = false;
@@ -468,69 +583,97 @@
                     this.flippedCards = [];
                 },
 
-                saveGameScore() {
+                // ====================== حفظ تلقائي ======================
+                autoSaveScore() {
                     if (this.scoreSaved) return;
+
+                    const playerName = (this.formData.name && this.formData.name.trim() !== '') ?
+                        this.formData.name.trim() :
+                        'ضيف كريم';
+
                     fetch('/game-score', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            player_name: this.formData.name || 'ضيف',
-                            time_seconds: this.gameTimer,
-                            moves: this.moves
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content')
+                            },
+                            body: JSON.stringify({
+                                player_name: playerName,
+                                time_seconds: this.gameTimer,
+                                moves: this.moves
+                            })
                         })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            this.scoreSaved = true;
-                            const toast = document.createElement('div');
-                            toast.className = 'fixed bottom-24 right-6 bg-emerald-600 text-white px-8 py-4 rounded-2xl shadow-2xl z-50';
-                            toast.textContent = '✅ تم حفظ رقمك القياسي بنجاح!';
-                            document.body.appendChild(toast);
-                            setTimeout(() => toast.remove(), 4000);
-                        } else {
-                            alert(data.message || 'فشل الحفظ');
-                        }
-                    })
-                    .catch(() => alert('خطأ في الاتصال'));
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                this.scoreSaved = true;
+
+                                const toast = document.createElement('div');
+                                toast.className =
+                                    'fixed bottom-28 right-6 bg-emerald-600/95 text-white px-6 py-4 rounded-2xl shadow-2xl z-[100] flex items-center gap-3 border border-emerald-400/30';
+                                toast.innerHTML = `
+                            <span class="text-2xl">🏆</span>
+                            <div>
+                                <div class="font-bold">تم حفظ رقمك القياسي تلقائياً!</div>
+                                <div class="text-sm text-emerald-100">شكراً لمشاركتك فرحتنا 💛</div>
+                            </div>
+                        `;
+                                document.body.appendChild(toast);
+
+                                setTimeout(() => {
+                                    toast.style.transition = 'all 0.6s ease';
+                                    toast.style.opacity = '0';
+                                    toast.style.transform = 'translateY(20px)';
+                                    setTimeout(() => toast.remove(), 600);
+                                }, 4500);
+                            }
+                        })
+                        .catch(err => {
+                            console.log('Auto save failed:', err);
+                        });
                 },
 
                 submitCongratulations() {
                     this.loading = true;
                     fetch('/congratulations', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify(this.formData)
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        this.loading = false;
-                        if (data.success) {
-                            this.showSuccess = true;
-                            this.formData.name = '';
-                            this.formData.message = '';
-                        } else {
-                            alert(data.message || 'حدث خطأ');
-                        }
-                    })
-                    .catch(() => {
-                        this.loading = false;
-                        alert('خطأ في الاتصال');
-                    });
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content')
+                            },
+                            body: JSON.stringify(this.formData)
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            this.loading = false;
+                            if (data.success) {
+                                this.showSuccess = true;
+                                this.formData.name = '';
+                                this.formData.message = '';
+                            } else {
+                                alert(data.message || 'حدث خطأ');
+                            }
+                        })
+                        .catch(() => {
+                            this.loading = false;
+                            alert('خطأ في الاتصال');
+                        });
                 },
 
                 shareWin() {
-                    const text = `🎉 خلصت لعبة الذاكرة في ${this.gameTimer} ثانية وبـ ${this.moves} حركة!\nفرح أحمد وأمنية 💍`;
-                    if (navigator.share) navigator.share({ title: 'فرح أحمد وأمنية', text });
-                    else {
-                        navigator.clipboard.writeText(text);
-                        alert("تم النسخ:\n" + text);
+                    const text =
+                        `🎉 خلصت لعبة الذاكرة في ${this.gameTimer} ثانية وبـ ${this.moves} حركة!\nفرح أحمد وأمنية 💍`;
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'فرح أحمد وأمنية',
+                            text
+                        });
+                    } else {
+                        navigator.clipboard.writeText(text).then(() => {
+                            alert("تم نسخ الإنجاز:\n" + text);
+                        });
                     }
                 },
 
@@ -541,6 +684,7 @@
                         petal.style.left = Math.random() * 100 + 'vw';
                         petal.style.width = petal.style.height = (Math.random() * 14 + 8) + 'px';
                         petal.style.animationDuration = (Math.random() * 8 + 6) + 's';
+                        petal.style.animationDelay = Math.random() * 5 + 's';
                         document.body.appendChild(petal);
                     }
                 }
@@ -548,4 +692,5 @@
         }
     </script>
 </body>
+
 </html>
