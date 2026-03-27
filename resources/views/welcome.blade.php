@@ -142,8 +142,7 @@
     <audio id="flipSfx" src="https://assets.mixkit.co/active_storage/sfx/2048/2048-preview.mp3"></audio>
     <audio id="winSfx" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
-    <audio id="bgMusic" loop
-        src="{{ asset('voice/voice.mp3') }}"></audio>
+    <audio id="bgMusic" loop src="{{ asset('voice/voice2.mp3') }}"></audio>
     <!-- === تأثير فتح الدعوة (الستارة) === -->
     <div x-show="!contentVisible" class="fixed inset-0 z-[100] flex overflow-hidden ">
         <div x-show="!opened" x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
@@ -266,6 +265,8 @@
                     <h2 class="text-3xl text-white font-aref-ruqaa">النص التاني فين؟</h2>
                     <p class="text-yellow-500 text-sm mt-2 font-medium"> كل حاجة وليها اللي يكملها.. ورّينا شطارتك💍
                     </p>
+                    <p>أسرع حد هيحصل علي هدية</p>
+
                     <div class="flex justify-center gap-6 mt-4 text-xs text-yellow-100/60 font-bold">
                         <span>عدد الحركات: <span class="text-white" x-text="moves">0</span></span>
                     </div>
@@ -317,7 +318,7 @@
 
                     <button @click="shareWin()"
                         class="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] py-4 rounded-2xl text-slate-900 font-bold text-lg shadow-lg hover:scale-105 transition-all">
-                        اسرع حد هيحصل علي هدية شارك النتيجة مع العروسين 💌
+                        شارك النتيجة مع العروسين 💌
                     </button>
 
                     <button @click="resetGame()" class="mt-4 text-yellow-400 text-sm hover:underline">
@@ -394,28 +395,32 @@
                         b: 'أُمْنِيَّةُ'
                     },
                     {
-                        a: '💃',
-                        b: '🕺'
+                        a: '🎂',
+                        b: '🎂'
                     },
                     {
-                        a: '🔐',
-                        b: '🔑'
+                        a: '😍',
+                        b: '😍'
                     },
                     {
-                        a: '🌙',
+                        a: '⭐',
                         b: '⭐'
                     },
                     {
                         a: '💍',
+                        b: '💍'
+                    },
+                    {
+                        a: '💎',
                         b: '💎'
                     },
                     {
-                        a: '🌹',
+                        a: '❤️',
                         b: '❤️'
                     },
                     {
-                        a: 'A',
-                        b: 'O'
+                        a: '🌹',
+                        b: '🌹'
                     },
                     {
                         a: 'Ahmed',
@@ -430,12 +435,16 @@
                         b: '📖'
                     },
                     {
-                        a: '🌞',
+                        a: '🌕',
                         b: '🌕'
                     },
                     {
-                        a: '🌧️',
-                        b: '☂️'
+                        a: '🎉',
+                        b: '🎉'
+                    },
+                    {
+                        a: '⭐',
+                        b: '⭐'
                     }
                 ],
 
