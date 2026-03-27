@@ -431,10 +431,6 @@
                         b: '🤵'
                     },
                     {
-                        a: '✍️',
-                        b: '📖'
-                    },
-                    {
                         a: '🌕',
                         b: '🌕'
                     },
@@ -618,17 +614,17 @@
                             if (data.success) {
                                 this.scoreSaved = true;
 
-                                const toast = document.createElement('div');
-                                toast.className =
-                                    'fixed bottom-28 right-6 bg-emerald-600/95 text-white px-6 py-4 rounded-2xl shadow-2xl z-[100] flex items-center gap-3 border border-emerald-400/30';
-                                toast.innerHTML = `
-                            <span class="text-2xl">🏆</span>
-                            <div>
-                                <div class="font-bold">تم حفظ رقمك القياسي تلقائياً!</div>
-                                <div class="text-sm text-emerald-100">شكراً لمشاركتك فرحتنا 💛</div>
-                            </div>
-                        `;
-                                document.body.appendChild(toast);
+                        //         const toast = document.createElement('div');
+                        //         toast.className =
+                        //             'fixed bottom-28 right-6 bg-emerald-600/95 text-white px-6 py-4 rounded-2xl shadow-2xl z-[100] flex items-center gap-3 border border-emerald-400/30';
+                        //         toast.innerHTML = `
+                        //     <span class="text-2xl">🏆</span>
+                        //     <div>
+                        //         <div class="font-bold">تم حفظ رقمك القياسي تلقائياً!</div>
+                        //         <div class="text-sm text-emerald-100">شكراً لمشاركتك فرحتنا 💛</div>
+                        //     </div>
+                        // `;
+                        //         document.body.appendChild(toast);
 
                                 setTimeout(() => {
                                     toast.style.transition = 'all 0.6s ease';
