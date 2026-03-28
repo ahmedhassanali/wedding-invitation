@@ -13,7 +13,13 @@
     <meta property="og:title" content="دعوة عقد قران أحمد وأمنية 💍">
     <meta property="og:description"
         content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا أجمل لحظاتنا ✨">
-    <meta property="og:image" content="{{ asset('images/wedding-preview.png') }}">
+
+    <meta property="og:image" content="{{ secure_asset('images/wedding-preview.png') }}">
+    <meta property="og:image:secure_url" content="{{ secure_asset('images/wedding-preview.png') }}">
+
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://ahmed-omneya.com/">
     <meta property="twitter:title" content="دعوة عقد قران أحمد وأمنية 💍">
