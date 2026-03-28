@@ -14,9 +14,9 @@
     <meta property="og:description"
         content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا أجمل لحظاتنا ✨">
 
-    <meta property="og:image" content="{{ secure_asset('images/wedding-preview.png') }}">
-    <meta property="og:image:secure_url" content="{{ secure_asset('images/wedding-preview.png') }}">
-
+    <meta property="og:image" content="https://ahmed-omneya.com/images/wedding-preview.png">
+    <meta property="og:image:secure_url" content="https://ahmed-omneya.com/images/wedding-preview.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -25,7 +25,9 @@
     <meta property="twitter:title" content="دعوة عقد قران أحمد وأمنية 💍">
     <meta property="twitter:description"
         content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا أجمل لحظاتنا ✨">
-    <meta property="twitter:image" content="{{ asset('images/wedding-preview.png') }}">
+    <meta property="twitter:image" content="https://ahmed-omneya.com/images/wedding-preview.png">
+
+    <meta property="twitter:image" content="{{ secure_asset('images/wedding-preview.png') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
