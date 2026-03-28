@@ -8,6 +8,19 @@
 
     <title>عقد قران أَحْمَدُ وَأُمْنِيَّةُ</title>
 
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ahmed-omneya.com/">
+    <meta property="og:title" content="دعوة عقد قران أحمد وأمنية 💍">
+    <meta property="og:description"
+        content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا أجمل لحظاتنا ✨">
+    <meta property="og:image" content="{{ asset('images/wedding-preview.png') }}">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ahmed-omneya.com/">
+    <meta property="twitter:title" content="دعوة عقد قران أحمد وأمنية 💍">
+    <meta property="twitter:description"
+        content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا أجمل لحظاتنا ✨">
+    <meta property="twitter:image" content="{{ asset('images/wedding-preview.png') }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -610,17 +623,17 @@
                             if (data.success) {
                                 this.scoreSaved = true;
 
-                        //         const toast = document.createElement('div');
-                        //         toast.className =
-                        //             'fixed bottom-28 right-6 bg-emerald-600/95 text-white px-6 py-4 rounded-2xl shadow-2xl z-[100] flex items-center gap-3 border border-emerald-400/30';
-                        //         toast.innerHTML = `
-                        //     <span class="text-2xl">🏆</span>
-                        //     <div>
-                        //         <div class="font-bold">تم حفظ رقمك القياسي تلقائياً!</div>
-                        //         <div class="text-sm text-emerald-100">شكراً لمشاركتك فرحتنا 💛</div>
-                        //     </div>
-                        // `;
-                        //         document.body.appendChild(toast);
+                                //         const toast = document.createElement('div');
+                                //         toast.className =
+                                //             'fixed bottom-28 right-6 bg-emerald-600/95 text-white px-6 py-4 rounded-2xl shadow-2xl z-[100] flex items-center gap-3 border border-emerald-400/30';
+                                //         toast.innerHTML = `
+                            //     <span class="text-2xl">🏆</span>
+                            //     <div>
+                            //         <div class="font-bold">تم حفظ رقمك القياسي تلقائياً!</div>
+                            //         <div class="text-sm text-emerald-100">شكراً لمشاركتك فرحتنا 💛</div>
+                            //     </div>
+                            // `;
+                                //         document.body.appendChild(toast);
 
                                 setTimeout(() => {
                                     toast.style.transition = 'all 0.6s ease';
