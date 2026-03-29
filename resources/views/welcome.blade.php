@@ -11,33 +11,24 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ahmed-omneya.com/">
     <meta property="og:title" content="دعوة عقد قران أحمد وأمنية 💍">
-    <meta property="og:description"
-        content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا أجمل لحظاتنا ✨">
-
+    <meta property="og:description" content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا الفرحة ✨">
     <meta property="og:image" content="https://ahmed-omneya.com/images/wedding-preview.jpg">
     <meta property="og:image:secure_url" content="https://ahmed-omneya.com/images/wedding-preview.jpg">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://ahmed-omneya.com/">
     <meta property="twitter:title" content="دعوة عقد قران أحمد وأمنية 💍">
-    <meta property="twitter:description"
-        content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا أجمل لحظاتنا ✨">
+    <meta property="twitter:description" content="فرحتنا مش هتكمل ولا تحلوّ غير بوجودكم جنبنا.. مستنيينكم تنورونا وتشاركونا الفرحة ✨">
     <meta property="twitter:image" content="https://ahmed-omneya.com/images/wedding-preview.jpg">
-
     <meta property="twitter:image" content="{{ secure_asset('images/wedding-preview.jpg') }}">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&family=Rakkas&family=Reem+Kufi:wght@400;700&family=Great+Vibes&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&family=Rakkas&family=Reem+Kufi:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
 
@@ -163,7 +154,7 @@
     <audio id="flipSfx" src="https://assets.mixkit.co/active_storage/sfx/2048/2048-preview.mp3"></audio>
     <audio id="winSfx" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
-    <audio id="bgMusic" loop src="{{ asset('voice/voice2.mp3') }}"></audio>
+    <audio id="bgMusic" loop src="{{ asset('voice/voice3.mp3') }}"></audio>
     <!-- === تأثير فتح الدعوة (الستارة) === -->
     <div x-show="!contentVisible" class="fixed inset-0 z-[100] flex overflow-hidden ">
         <div x-show="!opened" x-transition:leave="transition transform duration-[3000ms] cubic-bezier(0.4, 0, 0.2, 1)"
@@ -211,17 +202,13 @@
                 </svg>
             </div>
             <h1 class="font-rakkas text-6xl md:text-8xl text-gold mb-6">أَحْمَدُ وَ أُمْنِيَّةُ</h1>
-            <p class="max-w-2xl text-xl md:text-3xl font-aref-ruqaa text-gray-200 mb-10 px-6">
-                بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْر
-            </p>
+            <p class="max-w-2xl text-xl md:text-3xl font-aref-ruqaa text-gray-200 mb-10 px-6"> بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْر </p>
             <p class="font-kufi text-2xl text-yellow-200/80 mb-8" data-aos="fade-up">3 أبريل • 2026</p>
-
             <div class="flex flex-row-reverse justify-center gap-3 md:gap-6 font-tajawal" data-aos="fade-up">
                 <template
                     x-for="(val, label) in { 'يوم': countdown.days, 'ساعة': countdown.hours, 'دقيقة': countdown.minutes, 'ثانية': countdown.seconds }">
                     <div class="glass w-20 md:w-24 py-4 rounded-2xl border-yellow-500/20">
-                        <div class="text-3xl md:text-4xl font-black font-kufi text-gold"
-                            x-text="String(val).padStart(2, '0')"></div>
+                        <div class="text-3xl md:text-4xl font-black font-kufi text-gold" x-text="String(val).padStart(2, '0')"></div>
                         <div class="text-[10px] md:text-xs text-yellow-100/50 font-bold mt-1" x-text="label"></div>
                     </div>
                 </template>
@@ -272,10 +259,10 @@
                         <div class="text-5xl mb-4">🤲</div>
                         <h3 class="text-2xl text-gold font-bold mb-2">وصلت دعواتك الرقيقة</h3>
                         <p class="text-gray-300">شكراً لمشاركتكم فرحتنا ودعواتكم الطيبة.</p>
-                        <button @click="showSuccess = false"
-                            class="mt-6 text-yellow-500 border border-yellow-500/20 px-8 py-2 rounded-full text-sm">إغلاق</button>
+                        <button @click="showSuccess = false" class="mt-6 text-yellow-500 border border-yellow-500/20 px-8 py-2 rounded-full text-sm">إغلاق</button>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -284,8 +271,7 @@
             <div class="glass p-8 rounded-[2.5rem] font-tajawal" data-aos="fade-up">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl text-white font-aref-ruqaa">النص التاني فين؟</h2>
-                    <p class="text-yellow-500 text-sm mt-2 font-medium"> كل حاجة وليها اللي يكملها.. ورّينا شطارتك💍
-                    </p>
+                    <p class="text-yellow-500 text-sm mt-2 font-medium"> كل حاجة وليها اللي يشبها.. ورّينا شطارتك💍</p>
                     <p>أسرع حد هيحصل علي هدية</p>
 
                     <div class="flex justify-center gap-6 mt-4 text-xs text-yellow-100/60 font-bold">
@@ -316,7 +302,6 @@
                     </template>
                 </div>
 
-                <!-- شاشة الفوز -->
                 <!-- شاشة الفوز -->
                 <div x-show="cards.length > 0 && cards.every(c => c.cleared)"
                     class="mt-8 p-8 rounded-3xl border border-yellow-500/30 bg-yellow-500/5 text-center relative overflow-hidden">
