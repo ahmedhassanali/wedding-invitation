@@ -271,7 +271,7 @@
             <div class="glass p-8 rounded-[2.5rem] font-tajawal" data-aos="fade-up">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl text-white font-aref-ruqaa">النص التاني فين؟</h2>
-                    <p class="text-yellow-500 text-sm mt-2 font-medium"> كل حاجة وليها اللي يشبهااو يكملها.. ورّينا شطارتك💍</p>
+                    <p class="text-yellow-500 text-sm mt-2 font-medium"> كل حاجة وليها اللي يشبها او يكملها.. ورّينا شطارتك💍</p>
                     <p>اسرع واحد هيحصل علي هدية 🎁</p> </p>
 
                     <div class="flex justify-center gap-6 mt-4 text-xs text-yellow-100/60 font-bold">
