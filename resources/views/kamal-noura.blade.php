@@ -171,7 +171,10 @@
 <body x-data="weddingApp()">
 
     <!-- موسيقى -->
-    <audio id="bgMusic" loop src="voice/voice3.mp3"></audio>
+    {{-- <audio id="bgMusic" loop src="voice/voice2.mp3"></audio> --}}
+
+    <audio id="bgMusic" loop
+        src="https://dl.dropboxusercontent.com/scl/fi/o56fsq5awqeqsvx4sgm4y/voice.m4a?rlkey=fn0xpuib6te3mtniytvw69pd3"></audio>
 
     <audio id="openSfx" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 
@@ -489,13 +492,30 @@
                 moves: 0,
                 timerInterval: null,
 
-                pairs: [
-                    { a: 'كمال', b: 'نورا' },
-                    { a: '💍', b: '💍' },
-                    { a: '🤍', b: '🤍' },
-                    { a: '😍', b: '😍' },
-                    { a: '🫶', b: '🫶' },
-                    { a: '🕊️', b: '🕊️' }
+                pairs: [{
+                        a: 'كمال',
+                        b: 'نورا'
+                    },
+                    {
+                        a: '💍',
+                        b: '💍'
+                    },
+                    {
+                        a: '🤍',
+                        b: '🤍'
+                    },
+                    {
+                        a: '😍',
+                        b: '😍'
+                    },
+                    {
+                        a: '🫶',
+                        b: '🫶'
+                    },
+                    {
+                        a: '🕊️',
+                        b: '🕊️'
+                    }
                 ],
 
                 init() {
@@ -581,8 +601,18 @@
 
                     let cards = [];
                     this.pairs.forEach(pair => {
-                        cards.push({ value: pair.a, match: pair.b, flipped: false, cleared: false });
-                        cards.push({ value: pair.b, match: pair.a, flipped: false, cleared: false });
+                        cards.push({
+                            value: pair.a,
+                            match: pair.b,
+                            flipped: false,
+                            cleared: false
+                        });
+                        cards.push({
+                            value: pair.b,
+                            match: pair.a,
+                            flipped: false,
+                            cleared: false
+                        });
                     });
 
                     this.cards = cards.sort(() => Math.random() - 0.5);
