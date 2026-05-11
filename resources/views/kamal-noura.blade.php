@@ -305,7 +305,7 @@
                         </h3>
 
                         <p class="text-xl text-[#2f3a36]">
-                            القاهرة، مصر
+                            قاعة الماسة - المرج
                         </p>
 
                         <a href="https://www.google.com/maps?q=30.1488294,31.3667045&z=17&hl=en" target="_blank"
