@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>دعوة زفاف كمال & نورا</title>
 
@@ -704,6 +705,16 @@
                 },
 
                 submitCongratulations() {
+                    // Validation
+                    if (!this.formData.name.trim()) {
+                        alert('من فضلك أدخل اسمك');
+                        return;
+                    }
+                    if (!this.formData.message.trim()) {
+                        alert('من فضلك أدخل رسالتك');
+                        return;
+                    }
+
                     fetch('/congratulations', {
                         method: 'POST',
                         headers: {
@@ -711,24 +722,29 @@
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({
-                            name: this.formData.name,
-                            message: this.formData.message,
+                            name: this.formData.name.trim(),
+                            message: this.formData.message.trim(),
                             wedding_name: 'كمال و نورا'
                         })
                     })
-                    .then(res => res.json())
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error(`HTTP error! status: ${res.status}`);
+                        }
+                        return res.json();
+                    })
                     .then(data => {
                         if (data.success) {
-                            alert('شكراً لتهنئتك!');
+                            alert('شكراً لتهنئتك! تم إرسال رسالتك بنجاح');
                             this.formData.name = '';
                             this.formData.message = '';
                         } else {
-                            alert(data.message || 'حدث خطأ');
+                            alert(data.message || 'حدث خطأ في الإرسال');
                         }
                     })
                     .catch(err => {
                         console.error('Error:', err);
-                        alert('خطأ في الاتصال');
+                        alert('خطأ في الاتصال: ' + err.message);
                     });
                 },
 
