@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('game_scores', function (Blueprint $table) {
-            $table->id();
-            $table->string('player_name');             // اسم اللاعب
-            $table->integer('time_seconds');           // الوقت بالثواني
-            $table->integer('moves');                  // عدد الحركات
-            $table->string('ip_address')->nullable();
-            $table->index(['time_seconds', 'moves']);
-            $table->timestamps();    
-            $table->index('created_at');
-        });
+        if (!Schema::hasTable('game_scores')) {
+            Schema::create('game_scores', function (Blueprint $table) {
+                $table->id();
+                $table->string('player_name');             // اسم اللاعب
+                $table->integer('time_seconds');           // الوقت بالثواني
+                $table->integer('moves');                  // عدد الحركات
+                $table->string('ip_address')->nullable();
+                $table->index(['time_seconds', 'moves']);
+                $table->timestamps();
+                $table->index('created_at');
+            });
+        }
     }
 
     /**

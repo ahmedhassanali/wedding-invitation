@@ -9,5 +9,5 @@ class GameScore extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['player_name', 'time_seconds', 'moves', 'ip_address'];
+    protected $fillable = ['player_name', 'time_seconds', 'moves', 'ip_address', 'wedding_name'];
 }

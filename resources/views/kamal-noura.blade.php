@@ -335,12 +335,12 @@
                     اترك لنا رسالة 🤍
                 </h2>
 
-                <form class="space-y-5">
+                <form @submit.prevent="submitCongratulations" class="space-y-5">
 
-                    <input type="text" placeholder="اسمك الكريم"
+                    <input type="text" x-model="formData.name" placeholder="اسمك الكريم"
                         class="w-full rounded-2xl border border-[#8fa89e]/20 bg-white/60 px-5 py-4 outline-none">
 
-                    <textarea placeholder="رسالتك الجميلة..."
+                    <textarea x-model="formData.message" placeholder="رسالتك الجميلة..."
                         class="w-full h-40 rounded-2xl border border-[#8fa89e]/20 bg-white/60 px-5 py-4 outline-none"></textarea>
 
                     <button type="submit"
@@ -491,6 +491,10 @@
                 gameTimer: 0,
                 moves: 0,
                 timerInterval: null,
+                formData: {
+                    name: '',
+                    message: ''
+                },
 
                 pairs: [{
                         a: 'كمال',
@@ -665,6 +669,8 @@
                                         spread: 120
                                     });
 
+                                    this.autoSaveScore();
+
                                 }
 
                             } else {
@@ -695,6 +701,64 @@
                             alert("تم نسخ الإنجاز:\n" + text);
                         });
                     }
+                },
+
+                submitCongratulations() {
+                    fetch('/congratulations', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            name: this.formData.name,
+                            message: this.formData.message,
+                            wedding_name: 'كمال و نورا'
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('شكراً لتهنئتك!');
+                            this.formData.name = '';
+                            this.formData.message = '';
+                        } else {
+                            alert(data.message || 'حدث خطأ');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error:', err);
+                        alert('خطأ في الاتصال');
+                    });
+                },
+
+                autoSaveScore() {
+                    const playerName = (this.formData.name && this.formData.name.trim() !== '') ?
+                        this.formData.name.trim() :
+                        'ضيف كريم';
+
+                    fetch('/game-score', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            player_name: playerName,
+                            time_seconds: this.gameTimer,
+                            moves: this.moves,
+                            wedding_name: 'كمال و نورا'
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('تم حفظ النتيجة بنجاح');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error saving score:', err);
+                    });
                 },
 
                 createPetals() {

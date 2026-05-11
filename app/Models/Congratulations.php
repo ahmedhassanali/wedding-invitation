@@ -9,5 +9,5 @@ class Congratulations extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'message', 'ip_address'];
+    protected $fillable = ['name', 'message', 'ip_address', 'wedding_name'];
 }

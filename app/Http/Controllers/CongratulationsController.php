@@ -11,8 +11,9 @@ class CongratulationsController extends Controller
     {
         // Validation
         $request->validate([
-            'name'    => 'required|string',
-            'message' => 'required|string',
+            'name'          => 'required|string',
+            'message'       => 'required|string',
+            'wedding_name'  => 'required|string',
         ]);
 
         $ip = $request->ip();
@@ -31,9 +32,10 @@ class CongratulationsController extends Controller
 
         // Save to database
         Congratulations::create([
-            'name'        => strip_tags($request->name),
-            'message'     => strip_tags($request->message),
-            'ip_address'  => $ip,
+            'name'           => strip_tags($request->name),
+            'message'        => strip_tags($request->message),
+            'ip_address'     => $ip,
+            'wedding_name'   => strip_tags($request->wedding_name),
         ]);
 
         return response()->json([

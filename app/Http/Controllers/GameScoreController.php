@@ -14,6 +14,7 @@ class GameScoreController extends Controller
             'player_name'  => 'required|string|max:255',
             'time_seconds' => 'required|integer|min:0',
             'moves'        => 'required|integer|min:0',
+            'wedding_name' => 'required|string',
         ]);
 
         $ip = $request->ip();
@@ -24,6 +25,7 @@ class GameScoreController extends Controller
             'time_seconds'  => $request->time_seconds,
             'moves'         => $request->moves,
             'ip_address'    => $ip,
+            'wedding_name'  => strip_tags($request->wedding_name),
         ]);
 
         return response()->json([
