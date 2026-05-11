@@ -383,7 +383,7 @@
                                 <div
                                     class="absolute inset-0 rounded-2xl glass flex items-center justify-center backface-hidden">
 
-                                    <span class="text-3xl">❤️</span>
+                                    <span class="text-3xl">🌹</span>
 
                                 </div>
 
@@ -492,9 +492,9 @@
                 pairs: [
                     { a: 'كمال', b: 'نورا' },
                     { a: '💍', b: '💍' },
-                    { a: '🌹', b: '🌹' },
-                    { a: '🎉', b: '🎉' },
-                    { a: '💎', b: '💎' },
+                    { a: '🤍', b: '🤍' },
+                    { a: '😍', b: '😍' },
+                    { a: '🫶', b: '🫶' },
                     { a: '🕊️', b: '🕊️' }
                 ],
 
