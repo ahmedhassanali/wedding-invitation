@@ -330,28 +330,35 @@
         <!-- رسالة -->
         <section class="max-w-2xl mx-auto px-6 py-10">
 
-            <div class="glass rounded-[40px] p-8">
+            <div class="glass rounded-[40px] p-8 relative">
 
                 <h2 class="text-3xl font-kufi text-center text-gradient mb-8">
-                    اترك لنا رسالة 🤍
+                    بارك لنا بدعوة من قلبك 🤍
                 </h2>
 
-                <form @submit.prevent="submitCongratulations" class="space-y-5">
+                <form @submit.prevent="submitCongratulations" class="space-y-4">
 
-                    <input type="text" x-model="formData.name" placeholder="اسمك الكريم"
-                        class="w-full rounded-2xl border border-[#8fa89e]/20 bg-white/60 px-5 py-4 outline-none">
+                    <input type="text" x-model="formData.name" placeholder="اسمك الكريم" required
+                        class="w-full bg-white/50 border border-[#8fa89e]/30 rounded-xl px-4 py-3 text-[#2f3a36] focus:border-[#5f716a] outline-none transition-all">
 
-                    <textarea x-model="formData.message" placeholder="رسالتك الجميلة..."
-                        class="w-full h-40 rounded-2xl border border-[#8fa89e]/20 bg-white/60 px-5 py-4 outline-none"></textarea>
+                    <textarea x-model="formData.message" placeholder="اكتب تهنئتك هنا..." required
+                        class="w-full bg-white/50 border border-[#8fa89e]/30 rounded-xl px-4 py-3 h-32 text-[#2f3a36] focus:border-[#5f716a] outline-none transition-all"></textarea>
 
-                    <button type="submit"
-                        class="btn-primary w-full py-4 rounded-2xl text-white text-lg transition-all">
-
-                        إرسال الرسالة ✨
-
+                    <button type="submit" :disabled="loading"
+                        class="w-full bg-gradient-to-r from-[#5f716a] via-[#8fa89e] to-[#d6c2a1] py-3 rounded-xl text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50">
+                        إرسال التهنئة ✨
                     </button>
-
                 </form>
+
+                <div x-show="showSuccess" x-cloak
+                    class="absolute inset-0 bg-white/95 rounded-[40px] flex items-center justify-center text-center p-6 z-50">
+                    <div>
+                        <div class="text-5xl mb-4">🤲</div>
+                        <h3 class="text-2xl text-gradient font-bold mb-2">وصلت دعواتك الرقيقة</h3>
+                        <p class="text-[#5f716a]">شكراً لمشاركتكم فرحتنا ودعواتكم الطيبة.</p>
+                        <button @click="showSuccess = false" class="mt-6 text-[#5f716a] border border-[#8fa89e]/30 px-8 py-2 rounded-full text-sm hover:bg-[#8fa89e]/10 transition-all">إغلاق</button>
+                    </div>
+                </div>
 
             </div>
 
@@ -479,6 +486,8 @@
                 opened: false,
                 contentVisible: false,
                 musicPlaying: false,
+                loading: false,
+                showSuccess: false,
 
                 countdown: {
                     days: 0,
@@ -705,16 +714,7 @@
                 },
 
                 submitCongratulations() {
-                    // Validation
-                    if (!this.formData.name.trim()) {
-                        alert('من فضلك أدخل اسمك');
-                        return;
-                    }
-                    if (!this.formData.message.trim()) {
-                        alert('من فضلك أدخل رسالتك');
-                        return;
-                    }
-
+                    this.loading = true;
                     fetch('/congratulations', {
                         method: 'POST',
                         headers: {
@@ -722,29 +722,25 @@
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({
-                            name: this.formData.name.trim(),
-                            message: this.formData.message.trim(),
+                            name: this.formData.name,
+                            message: this.formData.message,
                             wedding_name: 'كمال و نورا'
                         })
                     })
-                    .then(res => {
-                        if (!res.ok) {
-                            throw new Error(`HTTP error! status: ${res.status}`);
-                        }
-                        return res.json();
-                    })
+                    .then(res => res.json())
                     .then(data => {
+                        this.loading = false;
                         if (data.success) {
-                            alert('شكراً لتهنئتك! تم إرسال رسالتك بنجاح');
+                            this.showSuccess = true;
                             this.formData.name = '';
                             this.formData.message = '';
                         } else {
-                            alert(data.message || 'حدث خطأ في الإرسال');
+                            alert(data.message || 'حدث خطأ');
                         }
                     })
-                    .catch(err => {
-                        console.error('Error:', err);
-                        alert('خطأ في الاتصال: ' + err.message);
+                    .catch(() => {
+                        this.loading = false;
+                        alert('خطأ في الاتصال');
                     });
                 },
 
