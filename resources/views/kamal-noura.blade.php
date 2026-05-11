@@ -383,7 +383,7 @@
                                 <div
                                     class="absolute inset-0 rounded-2xl glass flex items-center justify-center backface-hidden">
 
-                                    <span class="text-3xl">🤍</span>
+                                    <span class="text-3xl">❤️</span>
 
                                 </div>
 
@@ -485,13 +485,16 @@
 
                 cards: [],
                 flippedCards: [],
+                gameTimer: 0,
+                moves: 0,
+                timerInterval: null,
 
                 pairs: [
                     { a: 'كمال', b: 'نورا' },
                     { a: '💍', b: '💍' },
-                    { a: '✨', b: '✨' },
-                    { a: '🌙', b: '🌙' },
-                    { a: '🌿', b: '🌿' },
+                    { a: '🌹', b: '🌹' },
+                    { a: '🎉', b: '🎉' },
+                    { a: '💎', b: '💎' },
                     { a: '🕊️', b: '🕊️' }
                 ],
 
@@ -572,6 +575,10 @@
 
                 resetGame() {
 
+                    this.gameTimer = 0;
+                    this.moves = 0;
+                    this.flippedCards = [];
+
                     let cards = [];
                     this.pairs.forEach(pair => {
                         cards.push({ value: pair.a, match: pair.b, flipped: false, cleared: false });
@@ -579,7 +586,19 @@
                     });
 
                     this.cards = cards.sort(() => Math.random() - 0.5);
+                    this.startGameTimer();
 
+                },
+
+                startGameTimer() {
+                    if (this.timerInterval) clearInterval(this.timerInterval);
+                    this.timerInterval = setInterval(() => {
+                        if (!this.cards.every(c => c.cleared)) {
+                            this.gameTimer++;
+                        } else {
+                            clearInterval(this.timerInterval);
+                        }
+                    }, 1000);
                 },
 
                 flipCard(index) {
@@ -595,6 +614,8 @@
                     this.flippedCards.push(index);
 
                     if (this.flippedCards.length === 2) {
+
+                        this.moves++;
 
                         setTimeout(() => {
 
