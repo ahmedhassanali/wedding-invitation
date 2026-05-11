@@ -487,12 +487,12 @@
                 flippedCards: [],
 
                 pairs: [
-                    '🤍',
-                    '💍',
-                    '✨',
-                    '🌙',
-                    '🌿',
-                    '🕊️'
+                    { a: 'كمال', b: 'نورا' },
+                    { a: '💍', b: '💍' },
+                    { a: '✨', b: '✨' },
+                    { a: '🌙', b: '🌙' },
+                    { a: '🌿', b: '🌿' },
+                    { a: '🕊️', b: '🕊️' }
                 ],
 
                 init() {
@@ -572,16 +572,13 @@
 
                 resetGame() {
 
-                    let duplicated = [...this.pairs, ...this.pairs];
+                    let cards = [];
+                    this.pairs.forEach(pair => {
+                        cards.push({ value: pair.a, match: pair.b, flipped: false, cleared: false });
+                        cards.push({ value: pair.b, match: pair.a, flipped: false, cleared: false });
+                    });
 
-                    this.cards = duplicated
-                        .sort(() => Math.random() - 0.5)
-                        .map((item, index) => ({
-                            id: index,
-                            value: item,
-                            flipped: false,
-                            cleared: false
-                        }));
+                    this.cards = cards.sort(() => Math.random() - 0.5);
 
                 },
 
@@ -603,8 +600,8 @@
 
                             const [a, b] = this.flippedCards;
 
-                            if (this.cards[a].value === this.cards[
-                                    b].value) {
+                            if (this.cards[a].match === this.cards[b].value &&
+                                this.cards[b].match === this.cards[a].value) {
 
                                 this.cards[a].cleared = true;
                                 this.cards[b].cleared = true;
