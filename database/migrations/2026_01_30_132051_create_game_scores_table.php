@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('game_scores', function (Blueprint $table) {
+        // Schema::create('game_scores', function (Blueprint $table) {
             // $table->id();
             // $table->string('player_name');
             // $table->integer('moves'); // عدد الحركات لإنهاء اللعبة
             // $table->integer('time_spent'); // الوقت بالثواني (اختياري لكسر التعادل)
             // $table->timestamps();
-        });
+        // });
     }
 
     /**
