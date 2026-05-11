@@ -249,17 +249,17 @@
                 </p>
 
                 <!-- العد التنازلي -->
-                <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex flex-row justify-center gap-2">
 
                     <template
-                        x-for="(val, label) in { 'يوم': countdown.days, 'ساعة': countdown.hours, 'دقيقة': countdown.minutes, 'ثانية': countdown.seconds }">
+                        x-for="(val, label) in { 'ثانية': countdown.seconds, 'دقيقة': countdown.minutes, 'ساعة': countdown.hours, 'يوم': countdown.days }">
 
-                        <div class="glass w-24 h-28 rounded-3xl flex flex-col items-center justify-center">
+                        <div class="glass w-20 h-24 rounded-2xl flex flex-col items-center justify-center">
 
-                            <div class="text-4xl font-black text-[#5f716a]" x-text="String(val).padStart(2,'0')">
+                            <div class="text-3xl font-black text-[#5f716a]" x-text="String(val).padStart(2,'0')">
                             </div>
 
-                            <div class="text-sm text-[#8fa89e]" x-text="label"></div>
+                            <div class="text-xs text-[#8fa89e]" x-text="label"></div>
 
                         </div>
 
@@ -282,8 +282,8 @@
 
                         <div class="text-5xl mb-5">🕊️</div>
 
-                        <h3 class="text-3xl  text-[#5f716a] mb-3">
-                            موعد الحفل
+                        <h3 class="text-3xl font-kufi text-[#5f716a] mb-3">
+                            المــوعــد
                         </h3>
 
                         <p class="text-xl text-[#2f3a36]">
@@ -300,8 +300,8 @@
 
                         <div class="text-5xl mb-5">📍</div>
 
-                        <h3 class="text-3xl  text-[#5f716a] mb-3">
-                            موقع الحفل
+                        <h3 class="text-3xl  font-kufi text-[#5f716a] mb-3">
+                            المـوقــع
                         </h3>
 
                         <p class="text-xl text-[#2f3a36]">
@@ -328,7 +328,7 @@
 
             <div class="glass rounded-[40px] p-8">
 
-                <h2 class="text-4xl  text-center text-gradient mb-8">
+                <h2 class="text-3xl font-kufi text-center text-gradient mb-8">
                     اترك لنا رسالة 🤍
                 </h2>
 
@@ -360,7 +360,7 @@
 
                 <div class="text-center mb-10">
 
-                    <h2 class="text-5xl  text-gradient mb-4">
+                    <h2 class="text-3xl font-kufi text-gradient mb-4">
                         النص التاني فين؟
                     </h2>
 
@@ -448,7 +448,7 @@
         <!-- FOOTER -->
         <footer class="text-center px-6 pb-20">
 
-            <h2 class="text-6xl font-parisienne text-gradient mb-4">
+            <h2 class="text-4xl font-parisienne text-gradient mb-4">
                 Kamal & Noura
             </h2>
 
