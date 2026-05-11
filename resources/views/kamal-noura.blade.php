@@ -418,9 +418,9 @@
                             انهيت اللعبة بنجاح 🤍
                         </p>
 
-                        <button class="btn-primary px-8 py-4 rounded-full text-white">
+                        <button @click="shareWin()" class="btn-primary px-8 py-4 rounded-full text-white">
 
-                            شارك النتيجة 💌
+                            شارك النتيجة مع العروسين 💌
 
                         </button>
 
@@ -629,6 +629,21 @@
 
                     }
 
+                },
+
+                shareWin() {
+                    const text =
+                        `🎉 خلصت لعبة الذاكرة في ${this.gameTimer} ثانية وبـ ${this.moves} حركة!\nفرح كمال ونورا 💍`;
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'فرح كمال ونورا',
+                            text
+                        });
+                    } else {
+                        navigator.clipboard.writeText(text).then(() => {
+                            alert("تم نسخ الإنجاز:\n" + text);
+                        });
+                    }
                 },
 
                 createPetals() {
