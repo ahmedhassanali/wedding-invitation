@@ -9,6 +9,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/kamal-noura', function () {
+    return view('kamal-noura');
+});
+
 Route::get('/', [WeddingController::class, 'index'])->name('home');
 Route::post('/api/save-score', [WeddingController::class, 'saveScore']);
 Route::post('/wishes', [WeddingController::class, 'storeWish'])->name('wishes.store');
